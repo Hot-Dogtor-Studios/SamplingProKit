@@ -3,7 +3,6 @@
 <!-- MICROSHIMMER (FREE EDITION) v1.0 -->
 <!-- By Hot Dogtor Studios -->
 <!-- https://hotdogtor.com -->
-
 <!DOCTYPE document [
   <!ENTITY controlSize "46">
   <!ENTITY controlMiniSize "33">
@@ -98,29 +97,29 @@
       <control x="208" y="&controlSecondRowY;" width="&controlSize;" height="&controlSize;"
         style="&controlStyle;" customSkinImage="&customSkinImage;"
         customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
-       minValue="0.02" maxValue="10.0" value="0.02" parameterName="Release">
+        minValue="0.02" maxValue="10.0" value="0.02" parameterName="Release">
         <binding type="amp" level="instrument" parameter="ENV_RELEASE" />
       </control>
 
-      <!-- Resonance -->
-      <control x="273" y="&controlMiniSecondRowY1;" width="&controlMiniSize;"
+        <!-- LPF -->
+        <control x="273" y="&controlMiniSecondRowY1;" width="&controlMiniSize;"
+        height="&controlMiniSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="700" maxValue="20000.0" value="20000.0" parameterName="LPF">
+        <binding type="effect" level="instrument" effectIndex="1" position="1"
+          parameter="FX_FILTER_FREQUENCY"
+        />
+      </control>
+
+      <!-- RESONANCE -->
+      <control x="273" y="&controlMiniSecondRowY2;" width="&controlMiniSize;"
         height="&controlMiniSize;"
         style="&controlStyle;" customSkinImage="&customSkinImage;"
         customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
         minValue="0" maxValue="2.0" value="1" parameterName="Resonance">
         <binding type="effect" level="instrument" effectIndex="1" position="1"
           parameter="FX_FILTER_RESONANCE"
-        />
-      </control>
-
-      <!-- Cutoff -->
-      <control x="273" y="&controlMiniSecondRowY2;" width="&controlMiniSize;"
-        height="&controlMiniSize;"
-        style="&controlStyle;" customSkinImage="&customSkinImage;"
-        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
-        minValue="700" maxValue="20000.0" value="20000.0" parameterName="Cutoff">
-        <binding type="effect" level="instrument" effectIndex="1" position="1"
-          parameter="FX_FILTER_FREQUENCY"
         />
       </control>
 
@@ -591,7 +590,13 @@
 
   <modulators>
     <lfo shape="sine" frequency="3" modAmount="1.0">
-      <binding type="amp" level="instrument" position="0" parameter="AMP_VOLUME" modBehavior="add"
+      <binding type="amp" level="group" position="0" parameter="AMP_VOLUME"
+        translation="linear" translationOutputMin="0" translationOutputMax="1" />
+        <binding type="amp" level="group" position="1" parameter="AMP_VOLUME"
+        translation="linear" translationOutputMin="0" translationOutputMax="1" />
+        <binding type="amp" level="group" position="2" parameter="AMP_VOLUME"
+        translation="linear" translationOutputMin="0" translationOutputMax="1" />
+        <binding type="amp" level="group" position="3" parameter="AMP_VOLUME"
         translation="linear" translationOutputMin="0" translationOutputMax="1" />
     </lfo>
   </modulators>

@@ -60,7 +60,7 @@ If you find my work valuable to you, I'm happy to receive tips in Bitcoin, Dogec
 
 * BTC - bc1qr6vppaseaedhccg00r6khur27cuuvcucqlwvfs
 * DOGE - DDEXk4wPPaNSCu9UUEiX3SSP7Qn6wvyZ4S
-*ETH - 0xb4Bb59a19b8A2f5f48987d237C20bc0055a2306B
+* ETH - 0xb4Bb59a19b8A2f5f48987d237C20bc0055a2306B
 
 ## Maintainers
 
