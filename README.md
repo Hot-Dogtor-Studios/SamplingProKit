@@ -23,19 +23,19 @@ This template has MICROSHIMMER (FREE EDITION), an instrument I've created sampli
 * [DecentSampler](https://www.decentsamples.com/product/decent-sampler-plugin/)
 
 ## Getting started
-This instrument (MICROSHIMMER) has two groups of samples, one with the dry sound and the other with a shimmer reverb effect. The Shimmer knob is a mix blend between this two groups os samples, so in this case it's a version with or without effect. This is mapped to be used by the mod-wheel of the keyboards.
+This instrument (MICROSHIMMER) has two groups of samples, one with the dry sound and the other with a shimmer reverb effect. The Shimmer knob is a mix blend between this two groups of samples. This is mapped to be used by the mod-wheel of the keyboards.
 
 You need to replace the samples, name of the instrument and the path for the samples on some files.
 
-With SamplingProKit, all the most used controls on a virtual instrument are already created, so maybe you need to remove some code to make simplier instruments. Try find a variable from a feature you don't want in your instrument, and remove all the code with this variable (proceed with caution).
+With SamplingProKit, all the most used controls on a virtual instrument are already created, so maybe you need to remove some code to make simplier instruments. Try finding a variable from a feature you don't want in your instrument (like chorus effect), and remove all the code with that uses this variable (proceed with caution).
 
 ### Kontakt
 Kontakt works with a scripting language called KSP. I strongly recomend you to keep a open tab for the [documentation](https://www.native-instruments.com/ni-tech-manuals/ksp-manual/en/welcome-to-ksp).
 
 ### DecentSampler
 DecentSampler design and logic works with XML documents. It's much easier than Kontakt but it's a simplier sampler too. 
-[Documentation](https://www.decentsamples.com/docs/format-documentation.html)
-[Resources](https://www.decentsamples.com/decent-sampler-developer-resources/)
+* [Documentation](https://www.decentsamples.com/docs/format-documentation.html)
+* [Resources](https://www.decentsamples.com/decent-sampler-developer-resources/)
 
 ## 🚀 About Me
 My name is Hot Dogtor (my real name is Paulo Pinho) and I'm a music and software geek with the passion for merging this two very different areas. I'm a guitarist, producer, sound-designer, engineer, and software developer from Portugal.
@@ -58,9 +58,9 @@ Feel free to fork, open issues and create pull requests on this repo. If you nee
 
 If you find my work valuable to you, I'm happy to receive tips in Bitcoin, Dogecoin and Ethereum.
 
-BTC - bc1qr6vppaseaedhccg00r6khur27cuuvcucqlwvfs
-DOGE - DDEXk4wPPaNSCu9UUEiX3SSP7Qn6wvyZ4S
-ETH - 0xb4Bb59a19b8A2f5f48987d237C20bc0055a2306B
+* BTC - bc1qr6vppaseaedhccg00r6khur27cuuvcucqlwvfs
+* DOGE - DDEXk4wPPaNSCu9UUEiX3SSP7Qn6wvyZ4S
+*ETH - 0xb4Bb59a19b8A2f5f48987d237C20bc0055a2306B
 
 ## Maintainers
 
