@@ -1,0 +1,1487 @@
+
+{------- MICROSHIMMER (FREE EDITION) v1.0 -------}
+{------- By Hot Dogtor Studios -------}
+{------- https://hotdogtor.com -------}
+
+on init
+message("MICROSHIMMER (FREE EDITION) v1.0")
+make_perfview
+set_ui_height_px(480)
+set_ui_width_px(633)
+set_control_par_str($INST_WALLPAPER_ID,$CONTROL_PAR_PICTURE,"background")
+set_control_par_str($INST_ICON_ID,$CONTROL_PAR_PICTURE,"logo")
+
+{----- INIT -----}
+
+{ CONSTANTS }  
+declare const $REC_TIME_TRANSPORT_RUNNING := 10
+declare const $REC_TIME_TRANSPORT_STOPPED := 30
+declare const $LATCH_TIME := 300
+declare const $TICKS_PER_BEAT := 24
+declare const $MAX_OCTAVE_RANGE := 2
+declare const $MAX_REPEATS := 8
+declare const $MIN_STEPS := 4
+declare const $MAX_STEPS := 32
+
+{ VARIABLES }   
+declare $beat_grid := 16
+declare $check_id
+declare $chord_oct_counter
+declare $cursor
+declare $cursor_helper
+declare $grid_counter
+declare $i
+declare $j
+declare $k
+declare $o
+declare $p
+declare $temp1
+declare $temp2
+declare $temp3
+declare $last_random_note
+declare $oct_counter
+declare $old_latch_time
+declare $played_duration
+declare $played_note
+declare $played_velocity
+declare $play_counter
+declare $prev_arp_mode
+declare $seq_running
+declare $step_counter
+declare $step_direction
+declare $step_duration
+declare $steps_played
+declare $prev_step := -1
+declare $repeat_counter_note
+declare $repeat_counter_note_other
+declare $repeat_counter_table
+declare $ticks_per_step := 6
+declare $tick_counter
+declare $up_down_counter
+declare $up_down_direction
+declare $up_down_oct_counter
+declare $wait_time
+declare %note_buffer[128] { all held notes in the played order }
+declare %note_ids[128]
+declare %play_buffer[128] { the actual notes to be played }
+declare %play_down_buffer[128]
+declare %play_up_buffer[128]
+declare %play_vel_buffer[128] := (-1)
+declare %play_up_vel_buffer[128] := (-1)
+declare %play_down_vel_buffer[128] := (-1)
+declare %sorted_buffer[128]
+declare %sorted_vel_buffer[128]
+declare %vel_buffer[128] := (-1)
+declare $ScaleByVel := 0
+
+declare !rates[9]
+!rates[0] := " 1/64 T"
+!rates[1] := " 1/32 T"
+!rates[2] := " 1/32"
+!rates[3] := " 1/16 T"
+!rates[4] := " 1/16"
+!rates[5] := " 1/8 T"
+!rates[6] := " 1/8"
+!rates[7] := " 1/4 T"
+!rates[8] := " 1/4"
+
+declare !noteOrders[7]
+!noteOrders[0] := "As Played"
+!noteOrders[1] := "Up"
+!noteOrders[2] := "Down"
+!noteOrders[3] := "Up - Down"
+!noteOrders[4] := "Down - Up"
+!noteOrders[5] := "Random"
+!noteOrders[6] := "Chord"
+
+declare !tableOrders[6]
+!tableOrders[0] := ">>"
+!tableOrders[1] := "<<"
+!tableOrders[2] := ">> <<"
+!tableOrders[3] := "<< >>"
+!tableOrders[4] := "???"
+!tableOrders[5] := "Host Sync"
+
+
+declare $sliderSensitivity
+declare $sliderZeroDBMaxValue
+declare $sliderZeroDBMinValue
+$sliderSensitivity := -350
+$sliderZeroDBMinValue := 0
+$sliderZeroDBMaxValue := 630000
+
+declare $ButtonWidth
+declare $ButtonHeight
+$ButtonWidth := 32
+$ButtonHeight := 32
+
+{ AHDSR INIT CODE (only need one of these)}
+declare $grp_idx
+$grp_idx :=0
+declare $env_idx
+$env_idx :=find_mod($grp_idx, "ENV_AHDSR")
+
+{----- UI CONTROLS -----}
+
+{ VOLUME - SLIDER }
+declare ui_slider $Volume(1, $sliderZeroDBMaxValue)
+make_persistent($Volume)
+declare $VolumeId := get_ui_id($Volume)
+set_control_par_str($VolumeId, $CONTROL_PAR_PICTURE, "knob_big")
+set_control_par($VolumeId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($VolumeId,$CONTROL_PAR_DEFAULT_VALUE,500000)
+
+{ PAN - SLIDER }
+declare ui_slider $Pan(1, 1000000)
+make_persistent($Pan)
+declare $PanId := get_ui_id($Pan)
+set_control_par_str($PanId, $CONTROL_PAR_PICTURE, "knob_small")
+set_control_par($PanId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($PanId,$CONTROL_PAR_DEFAULT_VALUE,500000)
+
+{ TRANSPOSE - SLIDER }
+declare ui_slider $Tune(-12,12)
+make_persistent($Tune)
+declare $TuneId := get_ui_id($Tune)
+set_control_par_str($TuneId, $CONTROL_PAR_PICTURE, "knob_small")
+set_control_par($TuneId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($TuneId,$CONTROL_PAR_DEFAULT_VALUE,0)
+
+{ MONO - BUTTON }
+declare ui_switch $Mono
+make_persistent($Mono)
+pgs_create_key(MONO, 1)
+declare $MonoId := get_ui_id($Mono)
+declare $MonoTemp 
+$MonoTemp := $Mono { Use to access previous value when activating the arpeggiator, without getting the value from PSG }
+set_control_par_str($MonoId, $CONTROL_PAR_PICTURE, "button_mini")
+set_control_par_str($MonoId, $CONTROL_PAR_TEXT, "")
+set_control_par($MonoId, $CONTROL_PAR_WIDTH, $ButtonWidth)
+set_control_par($MonoId, $CONTROL_PAR_HEIGHT, $ButtonHeight)
+
+{ GLIDE TIME - SLIDER }
+declare ui_slider $Glide_Time (0, 127)
+make_persistent($Glide_Time)
+pgs_create_key(GLIDETIME, 1)
+declare $Glide_TimeId := get_ui_id($Glide_Time)
+set_control_par_str($Glide_TimeId, $CONTROL_PAR_PICTURE, "knob_small")
+set_control_par($Glide_TimeId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($Glide_TimeId,$CONTROL_PAR_DEFAULT_VALUE,0)
+
+{ ATTACK - SLIDER }
+declare ui_slider $Attack(1, 1000000)
+make_persistent($Attack)
+declare $AttackId := get_ui_id($Attack)
+set_control_par_str($AttackId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($AttackId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($AttackId,$CONTROL_PAR_DEFAULT_VALUE,1)
+
+{ DECAY - SLIDER }
+declare ui_slider $Decay(1, 1000000)
+make_persistent($Decay)
+declare $DecayId := get_ui_id($Decay)
+set_control_par_str($DecayId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($DecayId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($DecayId,$CONTROL_PAR_DEFAULT_VALUE,1000000)
+
+{ SUSTAIN - SLIDER }
+declare ui_slider $Sustain(1, 1000000)
+make_persistent($Sustain)
+declare $SustainId := get_ui_id($Sustain)
+set_control_par_str($SustainId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($SustainId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($SustainId,$CONTROL_PAR_DEFAULT_VALUE,1000000)
+
+{ RELEASE - SLIDER }
+declare ui_slider $Release(1, 1000000)
+make_persistent($Release)
+declare $ReleaseId := get_ui_id($Release)
+set_control_par_str($ReleaseId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($ReleaseId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($ReleaseId,$CONTROL_PAR_DEFAULT_VALUE,1)
+
+{ LPF - SLIDER }
+declare ui_slider $LPF(1, 1000000)
+make_persistent($LPF)
+declare $LPFId := get_ui_id($LPF)
+set_control_par_str($LPFId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($LPFId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($LPFId,$CONTROL_PAR_DEFAULT_VALUE,1000000)
+
+{ LPF RESONANCE - SLIDER }
+declare ui_slider $LPF_Resonance(1, 1000000)
+make_persistent($LPF_Resonance)
+declare $LPF_ResonanceId := get_ui_id($LPF_Resonance)
+set_control_par_str($LPF_ResonanceId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($LPF_ResonanceId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($LPF_ResonanceId,$CONTROL_PAR_DEFAULT_VALUE,1)
+
+{ DRIVE MIX - SLIDER }
+declare ui_slider $Drive_Mix(500000, 650000)
+make_persistent($Drive_Mix)
+declare $Drive_MixId := get_ui_id($Drive_Mix)
+set_control_par_str($Drive_MixId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($Drive_MixId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($Drive_MixId,$CONTROL_PAR_DEFAULT_VALUE,500000)
+
+
+{ EFFECTS }
+
+{ TREMOLO MIX - SLIDER }
+declare ui_slider $Tremolo_Mix(1, 1000000)
+$Tremolo_Mix := get_engine_par($ENGINE_PAR_MOD_TARGET_INTENSITY,find_mod(0,"LFO 1"), 1,-1)
+make_persistent($Tremolo_Mix)
+declare $Tremolo_MixId := get_ui_id($Tremolo_Mix)
+set_control_par_str($Tremolo_MixId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($Tremolo_MixId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($Tremolo_MixId,$CONTROL_PAR_DEFAULT_VALUE, 1)
+
+{ TREMOLO SPEED - SLIDER }
+declare ui_slider $Tremolo_Speed(1, 1000000)
+$Tremolo_Speed := get_engine_par($ENGINE_PAR_INTMOD_FREQUENCY,find_mod(0,"LFO 1"), 1,-1)
+make_persistent($Tremolo_Speed)
+declare $Tremolo_SpeedId := get_ui_id($Tremolo_Speed)
+set_control_par_str($Tremolo_SpeedId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($Tremolo_SpeedId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($Tremolo_SpeedId,$CONTROL_PAR_DEFAULT_VALUE, 600000)
+
+{ DELAY MIX - SLIDER }
+declare ui_slider $Delay_Mix(1, 397000)
+make_persistent($Delay_Mix)
+declare $Delay_MixId := get_ui_id($Delay_Mix)
+set_control_par_str($Delay_MixId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($Delay_MixId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($Delay_MixId,$CONTROL_PAR_DEFAULT_VALUE,1)
+
+{ DELAY TIME - SLIDER }
+declare ui_slider $Delay_Time(1, 1000000)
+make_persistent($Delay_Time)
+declare $Delay_TimeId := get_ui_id($Delay_Time)
+set_control_par_str($Delay_TimeId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($Delay_TimeId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($Delay_TimeId,$CONTROL_PAR_DEFAULT_VALUE,700000)
+
+{ DELAY FEEDBACK - SLIDER }
+declare ui_slider $Delay_Feedback(1, 1000000)
+make_persistent($Delay_Feedback)
+declare $Delay_FeedbackId := get_ui_id($Delay_Feedback)
+set_control_par_str($Delay_FeedbackId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($Delay_FeedbackId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($Delay_FeedbackId,$CONTROL_PAR_DEFAULT_VALUE,700000)
+
+{ REVERB MIX - SLIDER }
+declare ui_slider $Reverb_Mix(1, 400000)
+make_persistent($Reverb_Mix)
+declare $Reverb_MixId := get_ui_id($Reverb_Mix)
+set_control_par_str($Reverb_MixId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($Reverb_MixId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($Reverb_MixId,$CONTROL_PAR_DEFAULT_VALUE,1)
+
+{ REVERB SIZE - SLIDER }
+declare ui_slider $Reverb_Size(1, 1000000)
+make_persistent($Reverb_Size)
+declare $Reverb_SizeId := get_ui_id($Reverb_Size)
+set_control_par_str($Reverb_SizeId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($Reverb_SizeId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($Reverb_SizeId,$CONTROL_PAR_DEFAULT_VALUE,800000)
+
+{ REVERB DAMPING - SLIDER }
+declare ui_slider $Reverb_Damping(1, 1000000)
+make_persistent($Reverb_Damping)
+declare $Reverb_DampingId := get_ui_id($Reverb_Damping)
+set_control_par_str($Reverb_DampingId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($Reverb_DampingId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($Reverb_DampingId,$CONTROL_PAR_DEFAULT_VALUE,50000)
+
+{ CHORUS MIX - SLIDER }
+declare ui_slider $Chorus_Mix(1, 397000)
+make_persistent($Chorus_Mix)
+declare $Chorus_MixId := get_ui_id($Chorus_Mix)
+set_control_par_str($Chorus_MixId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($Chorus_MixId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($Chorus_MixId,$CONTROL_PAR_DEFAULT_VALUE,1)
+
+{ CHORUS DEPTH - SLIDER }
+declare ui_slider $Chorus_Depth(1, 1000000)
+make_persistent($Chorus_Depth)
+declare $Chorus_DepthId := get_ui_id($Chorus_Depth)
+set_control_par_str($Chorus_DepthId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($Chorus_DepthId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($Chorus_DepthId,$CONTROL_PAR_DEFAULT_VALUE,400000)
+
+{ CHORUS SPEED - SLIDER }
+declare ui_slider $Chorus_Speed(1, 1000000)
+make_persistent($Chorus_Speed)
+declare $Chorus_SpeedId := get_ui_id($Chorus_Speed)
+set_control_par_str($Chorus_SpeedId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($Chorus_SpeedId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($Chorus_SpeedId,$CONTROL_PAR_DEFAULT_VALUE,200000)
+
+{ SHIMMER - SLIDER }
+declare ui_slider $Shimmer($sliderZeroDBMinValue, $sliderZeroDBMaxValue)
+make_persistent($Shimmer)
+declare $ShimmerId := get_ui_id($Shimmer)
+set_control_par_str($ShimmerId, $CONTROL_PAR_PICTURE, "knob_big")
+set_control_par($ShimmerId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+
+{ DYNAMICS - BUTTON}
+declare ui_switch $Dynamics
+make_persistent($Dynamics)
+declare $DynamicsId := get_ui_id($Dynamics)
+set_control_par_str($DynamicsId, $CONTROL_PAR_PICTURE, "button_mini")
+set_control_par_str($DynamicsId, $CONTROL_PAR_TEXT, "")
+set_control_par($DynamicsId, $CONTROL_PAR_WIDTH, $ButtonWidth)
+set_control_par($DynamicsId, $CONTROL_PAR_HEIGHT, $ButtonHeight)
+
+
+{ ARPEGGIATOR }
+
+{ ARPEGGIATOR ON - BUTTON }
+declare ui_switch $Arp
+make_persistent($Arp)
+declare $ArpId := get_ui_id($Arp)
+set_control_par_str($ArpId, $CONTROL_PAR_PICTURE, "button_mini")
+set_control_par_str($ArpId, $CONTROL_PAR_TEXT, "")
+set_control_par($ArpId, $CONTROL_PAR_WIDTH, $ButtonWidth)
+set_control_par($ArpId, $CONTROL_PAR_HEIGHT, $ButtonHeight)
+
+{ ARPEGGIATOR LATCH - BUTTON }
+declare ui_switch $Latch
+make_persistent($Latch)
+declare $LatchId := get_ui_id($Latch)
+set_control_par_str($LatchId, $CONTROL_PAR_PICTURE, "button_mini")
+set_control_par_str($LatchId, $CONTROL_PAR_TEXT, "")
+set_control_par($LatchId, $CONTROL_PAR_WIDTH, $ButtonWidth)
+set_control_par($LatchId, $CONTROL_PAR_HEIGHT, $ButtonHeight)
+
+{ ARPEGGIATOR RATE - SLIDER }
+declare ui_slider $Rate (0, 8)
+$Rate := 4
+make_persistent($Rate)
+declare $RateId := get_ui_id($Rate)
+set_control_par_str($RateId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($RateId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($RateId,$CONTROL_PAR_DEFAULT_VALUE, 4)
+
+{ ARPEGGIATOR RATE - LABEL }
+declare ui_label $RateLabel (1,1)
+declare $RateLabelId := get_ui_id($RateLabel)
+set_control_par($RateLabelId,$CONTROL_PAR_TEXT_ALIGNMENT, 1)
+set_control_par($RateLabelId,$CONTROL_PAR_FONT_TYPE, 16)
+hide_part($RateLabel, $HIDE_PART_BG )
+set_text($RateLabel, !rates[$Rate])
+
+{ ARPEGGIATOR GATE - SLIDER }
+declare ui_slider $Duration (1, 100)
+$Duration := 100
+make_persistent($Duration)
+declare $DurationId := get_ui_id($Duration)
+set_control_par_str($DurationId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($DurationId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($DurationId,$CONTROL_PAR_DEFAULT_VALUE, 100)
+
+{ ARPEGGIATOR GATE - LABEL }
+declare ui_label $DurationLabel (1,1)
+declare $DurationLabelId := get_ui_id($DurationLabel)
+set_control_par($DurationLabelId,$CONTROL_PAR_TEXT_ALIGNMENT, 1)
+set_control_par($DurationLabelId,$CONTROL_PAR_FONT_TYPE, 16)
+hide_part($DurationLabel, $HIDE_PART_BG )
+set_text($DurationLabel, $Duration)
+
+{ ARPEGGIATOR SWING - SLIDER }
+declare ui_slider $Swing (0, 50)
+$Swing := 0
+make_persistent($Swing)
+declare $SwingId := get_ui_id($Swing)
+set_control_par_str($SwingId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($SwingId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($SwingId,$CONTROL_PAR_DEFAULT_VALUE, 0)
+
+{ ARPEGGIATOR SWING - LABEL }
+declare ui_label $SwingLabel (1,1)
+declare $SwingLabelId := get_ui_id($SwingLabel)
+set_control_par($SwingLabelId,$CONTROL_PAR_TEXT_ALIGNMENT, 1)
+set_control_par($SwingLabelId,$CONTROL_PAR_FONT_TYPE, 16)
+hide_part($SwingLabel, $HIDE_PART_BG )
+set_text($SwingLabel, $Swing)
+
+{ ARPEGGIATOR OCTAVE - SLIDER }
+declare ui_slider $Octave (-$MAX_OCTAVE_RANGE, $MAX_OCTAVE_RANGE)
+$Octave := 0
+make_persistent($Octave)
+declare $OctaveId := get_ui_id($Octave)
+set_control_par_str($OctaveId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($OctaveId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($OctaveId,$CONTROL_PAR_DEFAULT_VALUE, 0)
+
+{ ARPEGGIATOR OCTAVE - LABEL }
+declare ui_label $OctaveLabel (1,1)
+declare $OctaveLabelId := get_ui_id($OctaveLabel)
+set_control_par($OctaveLabelId,$CONTROL_PAR_TEXT_ALIGNMENT, 1)
+set_control_par($OctaveLabelId,$CONTROL_PAR_FONT_TYPE, 16)
+hide_part($OctaveLabel, $HIDE_PART_BG )
+set_text($OctaveLabel, $Octave)
+
+{ ARPEGGIATOR REPEATS - SLIDER }
+declare ui_slider $Repeats (1, $MAX_REPEATS)
+$Repeats := 1
+make_persistent($Repeats)
+declare $RepeatsId := get_ui_id($Repeats)
+set_control_par_str($RepeatsId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($RepeatsId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($RepeatsId,$CONTROL_PAR_DEFAULT_VALUE, 1)
+
+
+{ ARPEGGIATOR REPATS - LABEL }
+declare ui_label $RepeatsLabel (1,1)
+declare $RepeatsLabelId := get_ui_id($RepeatsLabel)
+set_control_par($RepeatsLabelId,$CONTROL_PAR_TEXT_ALIGNMENT, 1)
+set_control_par($RepeatsLabelId,$CONTROL_PAR_FONT_TYPE, 16)
+hide_part($RepeatsLabel, $HIDE_PART_BG )
+set_text($RepeatsLabel, $Repeats)
+
+{ ARPEGGIATOR STEPS - SLIDER }
+declare ui_slider $Steps ($MIN_STEPS, $MAX_STEPS)
+$Steps := 16
+make_persistent($Steps)
+declare $StepsId := get_ui_id($Steps)
+set_control_par_str($StepsId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($StepsId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($StepsId,$CONTROL_PAR_DEFAULT_VALUE, 16)
+
+{ ARPEGGIATOR STEPS - LABEL }
+declare ui_label $StepsLabel (1,1)
+declare $StepsLabelId := get_ui_id($StepsLabel)
+declare $StepsLabelText
+set_control_par($StepsLabelId,$CONTROL_PAR_TEXT_ALIGNMENT, 1)
+set_control_par($StepsLabelId,$CONTROL_PAR_FONT_TYPE, 16)
+hide_part($StepsLabel, $HIDE_PART_BG )
+set_text($StepsLabel, $Steps)
+
+{ ARPEGGIATOR NOTE ORDER - SLIDER }
+declare ui_slider $NoteOrder (0, 6)
+$NoteOrder := 1
+make_persistent($NoteOrder)
+declare $NoteOrderId := get_ui_id($NoteOrder)
+set_control_par_str($NoteOrderId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($NoteOrderId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($NoteOrderId,$CONTROL_PAR_DEFAULT_VALUE, 1)
+
+
+{ ARPEGGIATOR NOTE ORDER - LABEL }
+declare ui_label $NoteOrderLabel (1,1)
+declare $NoteOrderLabelId := get_ui_id($NoteOrderLabel)
+set_control_par($NoteOrderLabelId,$CONTROL_PAR_TEXT_ALIGNMENT, 1)
+set_control_par($NoteOrderLabelId,$CONTROL_PAR_FONT_TYPE, 16)
+hide_part($NoteOrderLabel, $HIDE_PART_BG )
+set_text($NoteOrderLabel, !noteOrders[$NoteOrder])
+
+{ ARPEGGIATOR NOTE ORDER - SLIDER }
+declare ui_slider $TableOrder (0, 5)
+$TableOrder := 0
+make_persistent($TableOrder)
+declare $TableOrderId := get_ui_id($TableOrder)
+set_control_par_str($TableOrderId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($TableOrderId,$CONTROL_PAR_MOUSE_BEHAVIOUR, -1000)
+set_control_par($TableOrderId,$CONTROL_PAR_DEFAULT_VALUE, 0)
+
+{ ARPEGGIATOR NOTE ORDER - LABEL }
+declare ui_label $TableOrderLabel (1,1)
+declare $TableOrderLabelId := get_ui_id($TableOrderLabel)
+set_control_par($TableOrderLabelId,$CONTROL_PAR_TEXT_ALIGNMENT, 1)
+set_control_par($TableOrderLabelId,$CONTROL_PAR_FONT_TYPE, 16)
+hide_part($TableOrderLabel, $HIDE_PART_BG )
+set_text($NoteOrderLabel, !tableOrders[$TableOrder])
+
+{ ARPEGGIATOR PATTERN - TABLE }
+declare ui_table %Pattern [$MAX_STEPS] (4, 4, 127)
+$i := 0
+while ($i < $MAX_STEPS)
+    %Pattern[$i] := 127
+    inc($i)
+end while
+make_persistent(%Pattern)
+declare $PatternId := get_ui_id(%Pattern)
+set_control_par($PatternId, $CONTROL_PAR_WIDTH, 570)
+set_control_par($PatternId, $CONTROL_PAR_HEIGHT, 50)
+set_control_par($PatternId, $CONTROL_PAR_BAR_COLOR, 9b23b33h)
+set_control_par($PatternId, $CONTROL_PAR_ZERO_LINE_COLOR, 9ff0000h)
+hide_part(%Pattern, $HIDE_PART_BG)
+{ hide_part(%Pattern, $HIDE_PART_VALUE) }
+
+{ ARPEGGIATOR CURRENT - TABLE }
+declare ui_table %Current [$MAX_STEPS] (4, 1, 1)
+make_persistent(%Current)
+declare $CurrentId := get_ui_id(%Current)
+set_control_par($CurrentId, $CONTROL_PAR_WIDTH, 570)
+set_control_par($CurrentId, $CONTROL_PAR_HEIGHT, 10)
+set_control_par($CurrentId, $CONTROL_PAR_BAR_COLOR, 9b23b33h)
+set_control_par($PatternId, $CONTROL_PAR_ZERO_LINE_COLOR, 9ff0000h)
+hide_part(%Current, $HIDE_PART_BG)
+{ hide_part(%Current, $HIDE_PART_VALUE) }
+
+{ ----- HELP -----}  
+
+{ AMP AND DRIVE }
+set_control_help($Volume,"Volume: Adjusts the master volume of Kontakt.")
+set_control_help($Pan,"Pan: Adjusts the panorama.")
+set_control_help($Tune,"Pitch Shifter: Adjusts the pitch of the instrument in semitones.")
+set_control_help($Attack,"Attack: Adjusts amount of attack of the amp (ADSR).")
+set_control_help($Decay,"Decay: Adjusts amount of decay of the amp (ADSR).")
+set_control_help($Sustain,"Sustain: Adjusts amount of sustain of the amp (ADSR).")
+set_control_help($Release,"Release: Adjusts amount of release of the amp (ADSR).")
+set_control_help($LPF,"Low Pass Filter: Adjusts the cutoff Ladder LP2 filter.")
+set_control_help($LPF_Resonance,"Resonance: Adjusts the resonance of the Ladder LP2 filter.")
+set_control_help($Tremolo_Mix,"Tremolo Mix: Adjusts the amount of tremolo (LFO).")
+set_control_help($Tremolo_Speed,"Tremolo Mix: Adjusts the tremolo speed.")
+
+{ EFFECTS }
+set_control_help($Drive_Mix,"Distortion: Adjusts the amount of distortion.")
+set_control_help($Delay_Mix,"Delay Mix: Adjusts the amount of delay.")
+set_control_help($Delay_Time,"Delay Time: Adjusts the delay time.")
+set_control_help($Delay_Feedback,"Delay Feedback: Adjusts the amount of delay repetitions.")
+set_control_help($Reverb_Mix,"Reverb Mix: Adjusts the amount of reverb.")
+set_control_help($Reverb_Size,"Reverb Size: Adjusts the size of the reverb.")
+set_control_help($Reverb_Damping,"Reverb Damping: Adjusts the damping of the reverb.")
+set_control_help($Chorus_Mix,"Chorus Mix: Adjusts the amount of chorus.")
+set_control_help($Chorus_Depth,"Chorus Depth: Adjusts the depth of the chorus.")
+set_control_help($Chorus_Speed,"Chorus Spree: Adjusts the speed of the chorus.")
+
+{ ARPEGGIATOR }
+set_control_help($NoteOrder,"Order: Selects the order in which the input notes are going to be arpeggiated.")
+set_control_help($TableOrder,"Velocity Pattern Order: Selects the order in which the velocities of generated MIDI notes are read from the <Velocity Pattern> table. When set to Host Sync, <Velocity Pattern> readout will be synchronized to the song position pointer when host's transport is running, ensuring identical playback throughout the song.")
+set_control_help($Rate,"Rate: Adjusts the arpeggiator rate in rhythmical values, synced to the host clock. T stands for triplet.")
+set_control_help($Duration,"Gate: Adjusts the duration of the arpeggiated MIDI notes in percent (using the <Rate> note value as base). This will only change the length of generated MIDI notes, not the volume envelope.")
+set_control_help($Swing,"Swing: Pushes every other step forward by the specified amount in percent, in order to create a swing feel.")
+set_control_help($Octave,"Octave: Adjusts the distribution of the arpeggio pattern in various octaves. The arpeggio pattern cycles from the played octave to the octave set upwards (if positive) or downwards (if negative).")
+set_control_help($Repeats,"Repeats: Adjusts the number of repeats of each note in the arpeggiator pattern.")
+set_control_help($Arp,"Arpeggiator Toggle: Enables or disables the arpeggiator.")
+set_control_help($Latch,"Latch Mode: When enabled, all played keys will be held indefinitely (or until <Latch> is disabled).")
+set_control_help($Steps,"Steps: Adjusts the number of steps in the velocity pattern.")
+set_control_help(%Pattern,"Pattern: Adjusts the velocity pattern of the arpeggiated notes. If a column is set to 0, the step will not be played. The actual velocity depends on <Scale by Velocity> button, the length of the pattern can be set with <Steps>.")
+
+{ OTHER }
+set_control_help($Shimmer,"Shimmer: Ajusts the amount shimmer reverb effect. Use the mod wheel to adjust this knob.")
+set_control_help($Dynamics,"Dynamics: If ON, all the samples will be played with the real MIDI velocity, with the possibility of a more dynamic sound. If OFF, all the notes are played with max velocity, being great for monophonic synth sounds.")
+set_control_help($Mono,"Monophony: If ON, the instrument is monophonic, and only one voice can be player at a time. If OFF, multiple voices can be played at the same time, making the possibility of creating chords and harmonies. NOTE: The Glide knob only works if Monophony is ON.")
+set_control_help($Glide_Time,"Glide: Adjusts the glide between notes.")
+
+{ ----- LAYOUT ----- }
+move_control_px($Shimmer, 522,33)
+move_control_px($Volume, 26,33)
+move_control_px($Pan, 100,47)
+move_control_px($Tune, 146,47)
+move_control_px($Glide_Time, 192,47)
+move_control_px($Dynamics, 240,34)
+move_control_px($Mono, 240,68)
+move_control_px($Attack, 26,137)
+move_control_px($Decay, 92,137)
+move_control_px($Sustain, 158,137)
+move_control_px($Release, 224,137)
+move_control_px($LPF, 290,137)
+move_control_px($LPF_Resonance, 356,137)
+move_control_px($Drive_Mix, 422,137)
+move_control_px($Tremolo_Mix, 488,137)
+move_control_px($Tremolo_Speed, 554,137)
+move_control_px($Delay_Mix, 26,231)
+move_control_px($Delay_Time, 92,231)
+move_control_px($Delay_Feedback, 158,231)
+move_control_px($Reverb_Mix, 224,231)
+move_control_px($Reverb_Size, 290,231)
+move_control_px($Reverb_Damping, 356,231)
+move_control_px($Chorus_Mix, 422,231)
+move_control_px($Chorus_Depth, 488,231)
+move_control_px($Chorus_Speed, 554,231)
+move_control_px($Arp, 562,334)
+move_control_px($Latch, 562,372)
+move_control_px($Rate, 26,330)
+move_control_px($RateLabel,4,380)
+move_control_px($Duration, 92,330)
+move_control_px($DurationLabel,70,380)
+move_control_px($Swing, 158,330)
+move_control_px($SwingLabel,136,380)
+move_control_px($Octave, 224,330)
+move_control_px($OctaveLabel,202,380)
+move_control_px($Repeats, 290,330)
+move_control_px($RepeatsLabel,268,380)
+move_control_px($Steps, 356,330)
+move_control_px($StepsLabel,334,380)
+move_control_px($NoteOrder, 422,330)
+move_control_px($NoteOrderLabel, 400,380)
+move_control_px($TableOrder,488,330)
+move_control_px($TableOrderLabel,466,380)
+move_control_px(%Pattern, 32,415)
+move_control_px(%Current, 32,406)
+make_persistent($beat_grid)
+make_persistent($prev_arp_mode)
+make_persistent($ticks_per_step)
+
+set_listener($NI_SIGNAL_TIMER_BEAT, $TICKS_PER_BEAT)
+
+end on
+
+{----- ON PERSISTANCE CHANGED -----}
+
+on persistence_changed
+    set_table_steps_shown(%Pattern, $Steps)
+    set_table_steps_shown(%Current, $Steps)
+    set_text($RateLabel, !rates[$Rate])
+    set_text($DurationLabel, $Duration)
+    set_text($SwingLabel, $Swing)
+    set_text($OctaveLabel, $Octave)
+    set_text($RepeatsLabel, $Repeats)
+    set_text($StepsLabel, $Steps)
+    set_text($NoteOrderLabel, !noteOrders[$NoteOrder])
+    set_text($TableOrderLabel, !tableOrders[$TableOrder])
+end on
+
+{----- FUNCTIONS -----}
+
+function ChangeRate()
+    select ($Rate)
+        case 0 { 1/64 T }
+            $ticks_per_step := 1
+            $beat_grid := 48
+        case 1 { 1/32 T }
+            $ticks_per_step := 2
+            $beat_grid := 48
+        case 2 { 1/32 }
+            $ticks_per_step := 3
+            $beat_grid := 32
+        case 3 { 1/16 T }
+            $ticks_per_step := 4
+            $beat_grid := 24
+        case 4 { 1/16 }
+            $ticks_per_step := 6
+            $beat_grid := 16
+        case 5 { 1/8 T }
+            $ticks_per_step := 8
+            $beat_grid := 12
+        case 6 { 1/8 }
+            $ticks_per_step := 12
+            $beat_grid := 8
+        case 7 { 1/4 T }
+            $ticks_per_step := 16
+            $beat_grid := 6
+        case 8 { 1/4 }
+            $ticks_per_step := 24
+            $beat_grid := 4
+    end select
+
+    set_text($RateLabel, !rates[$Rate])
+end function
+
+function ChangeNoteOrder() 
+    set_text($NoteOrderLabel, !noteOrders[$NoteOrder])
+end function
+
+function ChangeTableOrder()
+    set_text($TableOrderLabel, !tableOrders[$TableOrder])
+end function
+
+function ClearNoteBuffer()
+    $i := 0
+    while ($i < $cursor)
+        %note_buffer[$i] := 0
+
+        inc($i)
+    end while
+
+    $cursor := 0
+end function
+
+function StartSeq()
+    $seq_running := 1
+    $oct_counter := 0
+    $play_counter := 0
+    $up_down_direction := 0
+    $up_down_counter := 0
+    $up_down_oct_counter := 0
+    $chord_oct_counter := 0
+    $steps_played := 0
+
+    if ($TableOrder mod 2 = 0 and $TableOrder # 5)
+        if ($TableOrder = 4)
+            $step_counter := random(0, $Steps - 1)
+        else
+            $step_counter := 0
+        end if
+
+        $step_direction := 0
+        $tick_counter := -1
+    else
+        if ($NI_TRANSPORT_RUNNING = 0)
+            $step_counter := $Steps - 1
+            $step_direction := 1
+            $tick_counter := -1
+        end if
+    end if
+end function
+
+function StopSeq()
+    $seq_running := 0
+    $repeat_counter_note := 0
+    $repeat_counter_note_other := 0
+    $repeat_counter_table := 0
+    $prev_step := -1
+
+    $j := 0
+    while ($j < $MAX_STEPS)
+        %Current[$j] := 0
+
+        inc($j)
+    end while
+
+   {  pgs_set_key_val(ARP_COUNTER, 0, -1) }
+end function
+
+function TickReceived()
+    { get step counter }
+    if ($TableOrder # 5)
+        inc($tick_counter)
+
+        if ($tick_counter >= $ticks_per_step)
+            select ($TableOrder)
+                case 0  { forward }
+                    inc($step_counter)
+
+                    if ($repeat_counter_table < $Repeats - 1)
+                        dec($step_counter)
+                        inc($repeat_counter_table)
+                    else
+                        $repeat_counter_table := 0
+                    end if
+
+                    if ($step_counter >= $Steps)
+                        $step_counter := 0
+                    end if
+                case 1  { backward }
+                    dec($step_counter)
+
+                    if ($repeat_counter_table < $Repeats - 1)
+                        inc($step_counter)
+                        inc($repeat_counter_table)
+                    else
+                        $repeat_counter_table := 0
+                    end if
+
+                    if ($step_counter < 0)
+                        $step_counter := $Steps - 1
+                    end if
+                case 2 to 3  { forward-backward, backward-forward }
+                    if ($step_direction = 0)
+                        if ($step_counter=($Steps - 1))
+                            $step_direction := 1
+                            dec($step_counter)
+
+                            if ($repeat_counter_table < $Repeats - 1)
+                                inc($step_counter)
+                                inc($repeat_counter_table)
+                            else
+                                $repeat_counter_table := 0
+                            end if
+                        else
+                            inc($step_counter)
+
+                            if ($repeat_counter_table < $Repeats - 1)
+                                dec($step_counter)
+                                inc($repeat_counter_table)
+                            else
+                                $repeat_counter_table := 0
+                            end if
+                        end if
+                    else
+                        if ($step_counter = 0)
+                            $step_direction := 0
+                            inc($step_counter)
+
+                            if ($repeat_counter_table < $Repeats - 1)
+                                dec($step_counter)
+                                inc($repeat_counter_table)
+                            else
+                                $repeat_counter_table := 0
+                            end if
+                        else
+                            dec($step_counter)
+
+                            if ($repeat_counter_table < $Repeats - 1)
+                                inc($step_counter)
+                                inc($repeat_counter_table)
+                            else
+                                $repeat_counter_table := 0
+                            end if
+                        end if
+                    end if
+                case 4  { non-repeating random }
+                    if ($repeat_counter_table < $Repeats - 1)
+                        $step_counter := $step_counter
+                        inc($repeat_counter_table)
+                    else
+                        $step_counter := random(0, $Steps - 1)
+
+                        if ($step_counter = $prev_step)
+                            while ($step_counter = $prev_step)
+                                $step_counter := random(0, $Steps - 1)
+                            end while
+                        end if
+
+                        $prev_step := $step_counter
+                        $repeat_counter_table := 0
+                    end if
+            end select
+
+            $tick_counter := 0
+        end if
+    else
+        if ($NI_SONG_POSITION < 0)
+            exit
+        else
+            $tick_counter := ($NI_SONG_POSITION / 40) mod $ticks_per_step
+            $step_counter := ($NI_SONG_POSITION / (960*4 / $beat_grid)) mod $Steps
+        end if
+    end if
+
+    { create sorted buffer for note order up and down }
+    $i := 0
+    while ($i <= 127)
+        if ($i < $cursor)
+            %sorted_buffer[$i] := %note_buffer[$i]
+            %sorted_vel_buffer[$i] := %vel_buffer[$i]
+        else
+            %sorted_buffer[$i] := 0
+            %sorted_vel_buffer[$i] := -1
+            %note_buffer[$i] := 0
+            %vel_buffer[$i] := -1
+        end if
+
+        inc($i)
+    end while
+
+    { using insertion sort here because the velocity buffer needs to follow the sorting of the note buffer }
+    $o := 1
+    while ($o < num_elements(%sorted_buffer))
+        $temp1 := %sorted_buffer[$o]
+        $temp2 := %sorted_vel_buffer[$o]
+
+        $p := $o - 1
+        while ($p >= 0 and (%sorted_buffer[$p] < $temp1))
+            %sorted_buffer[$p + 1] := %sorted_buffer[$p]
+            %sorted_vel_buffer[$p + 1] := %sorted_vel_buffer[$p]
+            dec($p)
+        end while
+
+        %sorted_buffer[$p + 1] := $temp1
+        %sorted_vel_buffer[$p + 1] := $temp2
+
+        inc($o)
+    end while
+
+    { create play buffers }
+    $i := 0
+    while ($i < $cursor)
+        %play_buffer[$i] := %note_buffer[$i]
+        %play_up_buffer[$i] := %sorted_buffer[$cursor - 1 - $i]
+        %play_down_buffer[$i] := %sorted_buffer[$i]
+        %play_vel_buffer[$i] := %vel_buffer[$i]
+        %play_up_vel_buffer[$i] := %sorted_vel_buffer[$cursor - 1 - $i]
+        %play_down_vel_buffer[$i] := %sorted_vel_buffer[$i]
+
+        inc($i)
+    end while
+
+    { we have reached a step }
+    if ($tick_counter = 0)
+        $step_duration := ($DURATION_QUARTER * 4) / $beat_grid
+
+        { current step display }
+        if ($seq_running = 1)
+            $j := 0
+            while ($j < $MAX_STEPS)
+                %Current[$j] := 0
+
+                inc($j)
+            end while
+
+            %Current[$step_counter] := 1
+
+          {   pgs_set_key_val(ARP_COUNTER, 0, $step_counter) }
+        end if
+
+        { create note }
+        if (%Pattern[$step_counter] > 0 and $cursor > 0 and $seq_running = 1)
+            $played_duration := ($step_duration / 100) * $Duration
+            $played_velocity := %Pattern[$step_counter]
+
+            { swing implementation }
+            if ($steps_played mod 2 = 1 and $Swing > 0)
+                $wait_time := ($step_duration * $Swing) / 100
+
+                if ($wait_time > 0)
+                    wait($wait_time)
+                end if
+            end if
+
+            select ($NoteOrder)
+                case 0  { as played }
+                    $played_note := %play_buffer[$play_counter] + ($oct_counter * 12)
+
+                    if ($ScaleByVel = 1)
+                        $played_velocity := %play_vel_buffer[$play_counter] * %Pattern[$step_counter] / 127
+                    end if
+
+                    if (in_range($played_note, 0, 127))
+                        play_note($played_note, $played_velocity, 0, $played_duration)
+                    end if
+                case 1  { up }
+                    $played_note := %play_up_buffer[$play_counter] + ($oct_counter * 12)
+
+                    if ($ScaleByVel = 1)
+                        $played_velocity := %play_up_vel_buffer[$play_counter] * %Pattern[$step_counter] / 127
+                    end if
+                   
+                    if (in_range($played_note, 0, 127))
+                        play_note($played_note, $played_velocity, 0, $played_duration)
+                    end if
+                case 2  { down }
+                    $played_note := %play_down_buffer[$play_counter] + ($oct_counter * 12)
+
+                    if ($ScaleByVel = 1)
+                        $played_velocity := %play_down_vel_buffer[$play_counter] * %Pattern[$step_counter] / 127
+                    end if
+
+                    if (in_range($played_note, 0, 127))
+                        play_note($played_note, $played_velocity, 0, $played_duration)
+                    end if
+                case 3 to 4  { up-down, down-up }
+                    if ($NoteOrder = 3)
+                        $played_note := %play_up_buffer[$up_down_counter] + ($up_down_oct_counter * 12)
+
+                        if ($ScaleByVel = 1)
+                            $played_velocity := %play_up_vel_buffer[$play_counter] * %Pattern[$step_counter] / 127
+                        end if
+                    else
+                        $played_note := %play_down_buffer[$up_down_counter] + ($up_down_oct_counter * 12)
+
+                        if ($ScaleByVel = 1)
+                            $played_velocity := %play_down_vel_buffer[$play_counter] * %Pattern[$step_counter] / 127
+                        end if
+                    end if
+
+                    if (in_range($played_note, 0, 127))
+                        play_note($played_note, $played_velocity, 0, $played_duration)
+                    end if
+
+                    if ($cursor = 1)
+                        if ($repeat_counter_note_other < $Repeats - 1)
+                            inc($repeat_counter_note_other)
+                        else
+                            $repeat_counter_note_other := 0
+                        end if
+
+                        if ($repeat_counter_note_other = 0)
+                            if ($Octave > 0)
+                                inc($up_down_oct_counter)
+                            end if
+
+                            if ($Octave < 0)
+                                dec($up_down_oct_counter)
+                            end if
+                        end if
+
+                        if (abs($up_down_oct_counter) > abs($Octave))
+                            $up_down_oct_counter := 0
+                        end if
+                    end if
+
+                    if ($cursor = 2)
+                        inc($up_down_counter)
+
+                        if ($repeat_counter_note_other < $Repeats - 1)
+                            dec($up_down_counter)
+                            inc($repeat_counter_note_other)
+                        else
+                            $repeat_counter_note_other := 0
+                        end if
+
+                        if ($up_down_counter = 2)
+                            inc($up_down_oct_counter)
+
+                            if ($up_down_oct_counter > $Octave)
+                                $up_down_oct_counter := 0
+                            end if
+
+                            $up_down_counter := 0
+                        end if
+                    end if
+
+                    if ($cursor > 2)
+                        if ($up_down_counter >= $cursor - 1)
+                            $up_down_direction := 1  { go down }
+                        end if
+
+                        if ($up_down_counter <= 0)
+                            $up_down_direction := 0  { go up }
+                        end if
+
+                        if ($up_down_direction = 1)
+                            dec($up_down_counter)
+
+                            if ($repeat_counter_note_other < $Repeats - 1)
+                                inc($up_down_counter)
+                                inc($repeat_counter_note_other)
+                            else
+                                $repeat_counter_note_other := 0
+                            end if
+                        else
+                            inc($up_down_counter)
+
+                            if ($repeat_counter_note_other < $Repeats - 1)
+                                dec($up_down_counter)
+                                inc($repeat_counter_note_other)
+                            else
+                                $repeat_counter_note_other := 0
+                            end if
+                        end if
+
+                        if ($up_down_counter = 0 and $up_down_direction = 1)
+                            if ($Octave > 0)
+                                inc($up_down_oct_counter)
+                            end if
+
+                            if ($Octave < 0)
+                                dec($up_down_oct_counter)
+                            end if
+
+                            if (abs($up_down_oct_counter) > abs($Octave))
+                                $up_down_oct_counter := 0
+                            end if
+                        end if
+                    end if
+                case 5  { random }
+                    if ($repeat_counter_note_other = 0)
+                        $temp3 := random(0, $cursor - 1)
+                        $played_note := %play_buffer[$temp3] + (random(0, $Octave) * 12)
+
+                        { if three or more notes are played, no repetition of notes }
+                        if ($cursor * ($Octave + 1) >= 3)
+                            while ($played_note = $last_random_note)
+                                $temp3 := random(0, $cursor - 1)
+                                $played_note := %play_buffer[$temp3] + (random(0, $Octave) * 12)
+                            end while
+                        end if
+
+                        if ($ScaleByVel = 1)
+                            $played_velocity := %play_vel_buffer[$temp3] * %Pattern[$step_counter] / 127
+                        end if
+                    end if
+
+                    if (in_range($played_note, 0, 127))
+                        play_note($played_note, $played_velocity, 0, $played_duration)
+                        $last_random_note := $played_note
+                    end if
+
+                    if ($repeat_counter_note_other < $Repeats - 1)
+                        inc($repeat_counter_note_other)
+                    else
+                        $repeat_counter_note_other := 0
+                    end if
+                case 6  { chord }
+                    $i := 0
+                    while ($i < $cursor)
+                        $played_note := %play_buffer[$i] + ($chord_oct_counter * 12)
+
+                        if ($ScaleByVel = 1)
+                            $played_velocity := %play_vel_buffer[$i] * %Pattern[$step_counter] / 127
+
+                            if ($played_velocity < 1 and (%Pattern[$step_counter] > 0))
+                                $played_velocity := 1
+                            end if
+                        end if
+
+                        if (in_range($played_note, 0, 127))
+                            play_note($played_note, $played_velocity, 0, $played_duration)
+                        end if
+
+                        inc($i)
+                    end while
+
+                    if ($repeat_counter_note_other < $Repeats - 1)
+                        inc($repeat_counter_note_other)
+                    else
+                        if ($Octave > 0)
+                            inc($chord_oct_counter)
+                        end if
+
+                        if ($Octave < 0)
+                            dec($chord_oct_counter)
+                        end if
+
+                        if (abs($chord_oct_counter) > abs($Octave))
+                            $chord_oct_counter := 0
+                        end if
+
+                        $repeat_counter_note_other := 0
+                    end if
+            end select
+
+            { advance play counter }
+            inc($play_counter)
+
+            if ($repeat_counter_note < $Repeats - 1)
+                dec($play_counter)
+                inc($repeat_counter_note)
+            else
+                $repeat_counter_note := 0
+            end if
+
+            { reset play counter and get octave counter }
+            if ($play_counter >= $cursor)  { we have finished a cycle }
+                $play_counter := 0
+
+                if ($Octave > 0)
+                    inc($oct_counter)
+                end if
+
+                if ($Octave < 0)
+                    dec($oct_counter)
+                end if
+
+                if (abs($oct_counter) > abs($Octave))
+                    $oct_counter := 0
+                end if
+            end if
+        end if
+
+        inc($steps_played)
+    end if
+end function
+
+{----- ON NOTE -----}
+
+on note
+    if ($Dynamics = 0) 
+        change_velo($EVENT_ID, 127)
+    end if
+      if ($Arp = 1)
+        ignore_event($EVENT_ID)
+
+        { make sure we only receive one event per key }
+        if (%note_ids[$EVENT_NOTE] > 0)
+            exit
+        else
+            %note_ids[$EVENT_NOTE] := $EVENT_ID
+        end if
+
+        select ($Latch)
+            case 0
+                %note_buffer[$cursor] := $EVENT_NOTE
+                %vel_buffer[$cursor] := $EVENT_VELOCITY
+
+                inc($cursor)
+            case 1
+                if ($ENGINE_UPTIME - $old_latch_time > $LATCH_TIME)
+                    $i := 0
+                    while ($i < $cursor)
+                        %note_buffer[$i] := 0
+                        inc($i)
+                    end while
+
+                    $cursor := 0
+                end if
+
+                $old_latch_time := $ENGINE_UPTIME
+                %note_buffer[$cursor] := $EVENT_NOTE
+                %vel_buffer[$cursor] := $EVENT_VELOCITY
+
+                inc($cursor)
+        end select
+
+        { start arpegiator }
+        if ($cursor < 2 and $seq_running = 0)
+            if ($NI_TRANSPORT_RUNNING = 0)
+                wait($REC_TIME_TRANSPORT_STOPPED * 1000)
+            else
+                wait($REC_TIME_TRANSPORT_RUNNING * 1000)
+            end if
+
+            call StartSeq()
+        end if
+    end if
+end on
+
+on release
+    if (get_event_par($EVENT_ID, $EVENT_PAR_SOURCE) # $CURRENT_SCRIPT_SLOT)
+        { make sure we only receive one event per key }
+        if (%note_ids[$EVENT_NOTE] = 0)
+            exit
+        else
+            %note_ids[$EVENT_NOTE] := 0
+        end if
+
+        if ($seq_running = 1 and $Latch = 0)
+            $cursor_helper := 0
+
+            $i := 0
+            while ($i < $cursor)
+                if ($EVENT_NOTE # %note_buffer[$i])
+                    %note_buffer[$cursor_helper] := %note_buffer[$i]
+                    inc($cursor_helper)
+                end if
+
+                inc($i)
+            end while
+
+            $cursor := $cursor_helper
+
+            if ($seq_running = 1 and $cursor = 0)
+                call StopSeq()
+            end if
+        end if
+    end if
+end on
+
+on listener
+    if ($NI_SIGNAL_TYPE = $NI_SIGNAL_TIMER_BEAT and $seq_running = 1)
+        call TickReceived()
+    end if
+end on
+
+{----- CONTROL -----}
+
+{ VOLUME - CONTROL }
+on ui_control($Volume)
+set_engine_par($ENGINE_PAR_VOLUME, $Volume, -1, -1, -1)
+end on
+
+{ PAN - CONTROL }
+on ui_control($Pan)
+set_engine_par($ENGINE_PAR_PAN, $Pan, -1, -1, -1)
+end on
+
+{ TRANSPOSE - CONTROL }
+on ui_control($Tune)
+ set_engine_par($ENGINE_PAR_TUNE,500000 + ($Tune * 13889),-1,-1,-1)
+end on
+
+{ SHIMMER - CONTROL }
+on ui_control($Shimmer)
+set_engine_par($ENGINE_PAR_VOLUME, $Shimmer, 1, -1, -1)
+set_engine_par($ENGINE_PAR_VOLUME, abs($Shimmer - $sliderZeroDBMaxValue), 0, -1, -1)
+end on
+
+{ MONO - CONTROL }
+on ui_control($Mono)
+    pgs_set_key_val(MONO, 0, $Mono)
+    $MonoTemp := $Mono
+end on
+
+{ GLIDE TIME - CONTROL }
+on ui_control($Glide_Time)
+    pgs_set_key_val(GLIDETIME, 0, $Glide_Time)
+end on
+
+{ ATTACK - CONTROL }
+on ui_control($Attack)
+$grp_idx :=0
+while($grp_idx < $NUM_GROUPS)
+set_engine_par($ENGINE_PAR_ATTACK, $Attack, $grp_idx, $env_idx, -1)
+inc($grp_idx)
+end while
+end on
+
+{ DECAY - CONTROL }
+on ui_control($Decay)
+$grp_idx :=0
+while($grp_idx < $NUM_GROUPS)
+set_engine_par($ENGINE_PAR_HOLD, $Decay, $grp_idx, $env_idx, -1)
+inc($grp_idx)
+end while
+end on
+
+{ SUSTAIN - CONTROL }
+on ui_control($Sustain)
+$grp_idx :=0
+while($grp_idx < $NUM_GROUPS)
+set_engine_par($ENGINE_PAR_SUSTAIN, $Sustain, $grp_idx, $env_idx, -1)
+inc($grp_idx)
+end while
+end on
+
+{ RELEASE - CONTROL }
+on ui_control($Release)
+$grp_idx :=0
+while($grp_idx < $NUM_GROUPS)
+set_engine_par($ENGINE_PAR_RELEASE, $Release, $grp_idx, $env_idx, -1)
+inc($grp_idx)
+end while
+end on
+
+{ LPF - CONTROL }
+on ui_control($LPF)
+set_engine_par($ENGINE_PAR_CUTOFF, $LPF, -1, 0, -1)
+end on
+
+{ LPF RESONANCE - CONTROL }
+on ui_control($LPF_Resonance)
+set_engine_par($ENGINE_PAR_RESONANCE, $LPF_Resonance, -1, 0, -1)
+end on
+
+{ DRIVE MIX - CONTROL }
+on ui_control($Drive_Mix)
+set_engine_par($ENGINE_PAR_SHAPE, $Drive_Mix, -1, 1, -1)
+end on
+
+{ TREMOLO MIX - CONTROL }
+on ui_control($Tremolo_Mix)
+$grp_idx :=0
+while($grp_idx < $NUM_GROUPS)
+set_engine_par($ENGINE_PAR_MOD_TARGET_INTENSITY,$Tremolo_Mix,$grp_idx,find_mod($grp_idx,"LFO 1"),-1)
+inc($grp_idx)
+end while
+end on
+
+{ TREMOLO SPEED - CONTROL }
+on ui_control($Tremolo_Speed)
+$grp_idx :=0
+while($grp_idx < $NUM_GROUPS)
+set_engine_par($ENGINE_PAR_INTMOD_FREQUENCY,$Tremolo_Speed,$grp_idx,find_mod($grp_idx,"LFO 1"),-1)
+inc($grp_idx)
+end while
+end on
+
+{ DELAY MIX - CONTROL }
+on ui_control($Delay_Mix)
+set_engine_par($ENGINE_PAR_SEND_EFFECT_OUTPUT_GAIN, $Delay_Mix, -1, 2, 1)
+end on
+
+{ DELAY TIME - CONTROL }
+on ui_control($Delay_Time)
+set_engine_par($ENGINE_PAR_DL_TIME, $Delay_Time, -1, 2, 1)
+end on
+
+{ DELAY FEEDBACK - CONTROL }
+on ui_control($Delay_Feedback)
+set_engine_par($ENGINE_PAR_DL_FEEDBACK, $Delay_Feedback, -1, 2, 1)
+end on
+
+{ REVERB MIX - CONTROL }
+on ui_control($Reverb_Mix)
+set_engine_par($ENGINE_PAR_SEND_EFFECT_OUTPUT_GAIN, $Reverb_Mix, -1, 3, 1)
+end on
+
+{ REVERB SIZE - CONTROL }
+on ui_control($Reverb_Size)
+set_engine_par($ENGINE_PAR_RV2_SIZE, $Reverb_Size, -1, 3, 1)
+end on
+
+{ REVERB DAMPING - CONTROL }
+on ui_control($Reverb_Damping)
+set_engine_par($ENGINE_PAR_RV2_DAMPING, $Reverb_Damping, -1, 3, 1)
+end on
+
+{ CHORUS MIX - CONTROL }
+on ui_control($Chorus_Mix)
+set_engine_par($ENGINE_PAR_SEND_EFFECT_OUTPUT_GAIN, $Chorus_Mix, -1, 4, 1)
+end on
+
+{ CHORUS DEPTH - CONTROL }
+on ui_control($Chorus_Depth)
+set_engine_par($ENGINE_PAR_CH_DEPTH, $Chorus_Depth, -1, 4, 1)
+end on
+
+{ CHORUS SPEED - CONTROL }
+on ui_control($Chorus_Speed)
+set_engine_par($ENGINE_PAR_CH_SPEED, $Chorus_Speed, -1, 4, 1)
+end on
+
+{ ARPEGGIATOR ON - CONTROL }
+on ui_control ($Arp)
+    { Disable Mono }
+    if ($Arp = 1) 
+        pgs_set_key_val(MONO, 0, 0) 
+    else 
+        if ($Mono # $MonoTemp)
+            pgs_set_key_val(MONO, 0, 1) 
+        else
+            pgs_set_key_val(MONO, 0, 0) 
+        end if
+    end if
+
+    if ($Arp = 0)
+        call ClearNoteBuffer()
+        call StopSeq()
+    end if
+end on
+
+{ ARPEGGIATOR LATCH - CONTROL }
+on ui_control($Latch)
+    if ($Latch = 0)
+        call ClearNoteBuffer()
+        call StopSeq()
+    end if
+end on
+
+{ ARPEGGIATOR RATE - CONTROL }
+on ui_control($Rate)
+    call ChangeRate()
+end on
+
+{ ARPEGGIATOR GATE - CONTROL }
+on ui_control($Duration)
+    set_text($DurationLabel, $Duration)
+end on
+
+{ ARPEGGIATOR SWING - CONTROL }
+on ui_control($Swing)
+    set_text($SwingLabel, $Swing)
+end on
+
+{ ARPEGGIATOR OCTAVE - CONTROL }
+on ui_control($Octave)
+    set_text($OctaveLabel, $Octave)
+end on
+
+{ ARPEGGIATOR REPEATS - CONTROL }
+on ui_control($Repeats)
+    set_text($RepeatsLabel, $Repeats)
+     set_control_par_str($RepeatsLabelId, $CONTROL_PAR_TEXT, $Repeats)
+   {  message($Repeats & " " &  $ENGINE_UPTIME ) }
+end on
+
+{ ARPEGGIATOR STEPS - CONTROL }
+on ui_control ($Steps)
+    set_table_steps_shown(%Pattern, $Steps)
+    set_table_steps_shown(%Current, $Steps)
+    set_text($StepsLabel, $Steps)
+end on
+
+{ ARPEGGIATOR NOTE ORDER - CONTROL }
+on ui_control ($NoteOrder)
+   call ChangeNoteOrder()
+end on
+
+{ ARPEGGIATOR TABLE ORDER - CONTROL }
+on ui_control ($TableOrder)
+   call ChangeTableOrder()
+end on
+
+{ SHIMMER - MOD WHEEL CONTROL }
+on controller
+    { Mod Wheel }
+    if ($CC_NUM=1)
+        $Shimmer := %CC[1]*4960
+        set_engine_par($ENGINE_PAR_VOLUME, $Shimmer, 1, -1, -1)
+        set_engine_par($ENGINE_PAR_VOLUME, abs($Shimmer - $sliderZeroDBMaxValue), 0, -1, -1)
+    end if
+end on
+
+{ PGS - PROGRAM GLOBAL STORAGE }
+on pgs_changed
+    { Unisono - Portamento }
+    if (pgs_key_exists(GLIDETIME) and pgs_get_key_val(GLIDETIME, 0) # $Glide_Time)
+        $Glide_Time := pgs_get_key_val(GLIDETIME, 0)
+    end if
+    if (pgs_key_exists(MONO) and pgs_get_key_val(MONO, 0) # $Mono)
+        $Mono := pgs_get_key_val(MONO, 0)
+    end if 
+end on

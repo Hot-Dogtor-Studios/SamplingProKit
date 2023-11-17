@@ -1,0 +1,605 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- MICROSHIMMER (FREE EDITION) v1.0 -->
+<!-- By Hot Dogtor Studios -->
+<!-- https://hotdogtor.com -->
+
+<!DOCTYPE document [
+  <!ENTITY controlSize "46">
+  <!ENTITY controlMiniSize "33">
+  <!ENTITY controlBigSize "58">
+  <!ENTITY smallControlSize "38">
+  <!ENTITY switchSize "33">
+  <!ENTITY customSkinImage "img/knob_128_128_120.png">
+  <!ENTITY faderSkinImage "img/fader_128_32_100.png">
+  <!ENTITY customSkinNumFrames "120">
+  <!ENTITY controlFirstRowY "37">
+  <!ENTITY controlSecondRowY "139">
+  <!ENTITY controlMiniSecondRowY1 "127">
+  <!ENTITY controlMiniSecondRowY2 "167">
+  <!ENTITY controlStyle "custom_skin_vertical_drag">
+  <!ENTITY mouseDragSensitivity "514">
+]>
+
+<DecentSampler minVersion="1.8.5">
+  <ui
+    width="812" height="395"
+    layoutMode="relative"
+    bgMode="top_left"
+    bgImage="img/decentsampler_background.jpg"
+    coverArt="img/decentsampler_cover.jpg"
+  >
+    <tab name="main">
+
+      <!-- SHIMMER -->
+      <control x="708" y="31" width="&controlBigSize;" height="&controlBigSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0" maxValue="1" value="1" parameterName="Shimmer">
+        <binding type="amp" level="tag" identifier="basic-polyphony-on" parameter="AMP_VOLUME"
+          translation="linear" translationOutputMin="1" translationOutputMax="0" />
+        <binding type="amp" level="tag" identifier="shimmer-polyphony-on" parameter="AMP_VOLUME"
+          translation="linear" translationOutputMin="0" translationOutputMax="1" />
+        <binding type="amp" level="tag" identifier="basic-polyphony-off" parameter="AMP_VOLUME"
+          translation="linear" translationOutputMin="1" translationOutputMax="0" />
+        <binding type="amp" level="tag" identifier="shimmer-polyphony-off" parameter="AMP_VOLUME"
+          translation="linear" translationOutputMin="0" translationOutputMax="1" />
+      </control>
+
+      <!-- VOLUME -->
+      <control x="24" y="31" width="&controlBigSize;" height="&controlBigSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="700"
+        minValue="0" maxValue="3" value="1" parameterName="Volume">
+        <binding type="amp" level="instrument" parameter="AMP_VOLUME" />
+      </control>
+
+      <!-- PAN -->
+      <control x="90" y="34" width="100" height="25"
+        style="custom_skin_horizontal_drag" customSkinImage="&faderSkinImage;"
+        customSkinNumFrames="100" mouseDragSensitivity="300"
+        minValue="-100" maxValue="100" value="0" parameterName="Pan">
+        <binding type="amp" level="instrument" parameter="PAN" />
+      </control>
+
+      <!-- TRANSPOSE -->
+      <control x="90" y="74" width="100" height="25"
+        style="custom_skin_horizontal_drag" customSkinImage="img/fader_128_32_25.png"
+        customSkinNumFrames="25" mouseDragSensitivity="300" minValue="-12" maxValue="12" value="0"
+        parameterName="Transpose">
+        <binding type="amp" level="instrument" parameter="GLOBAL_TUNING" translation="linear" />
+      </control>
+
+      <!-- ATTACK -->
+      <control x="31" y="&controlSecondRowY;" width="&controlSize;" height="&controlSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0" maxValue="7" value="0" parameterName="Attack">
+        <binding type="amp" level="instrument" parameter="ENV_ATTACK" />
+      </control>
+
+      <!-- DECAY -->
+      <control x="90" y="&controlSecondRowY;" width="&controlSize;" height="&controlSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0" maxValue="10.0" value="0" parameterName="Decay">
+        <binding type="amp" level="instrument" parameter="ENV_DECAY" />
+      </control>
+
+      <!-- SUSTAIN -->
+      <control x="149" y="&controlSecondRowY;" width="&controlSize;" height="&controlSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0" maxValue="1.0" value="1.0" parameterName="Sustain">
+        <binding type="amp" level="instrument" parameter="ENV_SUSTAIN" />
+      </control>
+
+      <!-- RELEASE -->
+      <control x="208" y="&controlSecondRowY;" width="&controlSize;" height="&controlSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+       minValue="0.02" maxValue="10.0" value="0.02" parameterName="Release">
+        <binding type="amp" level="instrument" parameter="ENV_RELEASE" />
+      </control>
+
+      <!-- Resonance -->
+      <control x="273" y="&controlMiniSecondRowY1;" width="&controlMiniSize;"
+        height="&controlMiniSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0" maxValue="2.0" value="1" parameterName="Resonance">
+        <binding type="effect" level="instrument" effectIndex="1" position="1"
+          parameter="FX_FILTER_RESONANCE"
+        />
+      </control>
+
+      <!-- Cutoff -->
+      <control x="273" y="&controlMiniSecondRowY2;" width="&controlMiniSize;"
+        height="&controlMiniSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="700" maxValue="20000.0" value="20000.0" parameterName="Cutoff">
+        <binding type="effect" level="instrument" effectIndex="1" position="1"
+          parameter="FX_FILTER_FREQUENCY"
+        />
+      </control>
+
+      <!-- LEGATO BUTTON-->
+      <button x="322" y="128" width="&controlMiniSize;"
+        height="&controlMiniSize;"
+        style="image">
+        <state name="Legato Off"
+          mainImage="img/red_off.png"
+          hoverImage="img/red_off.png"
+          clickImage="img/red_on.png">
+          <binding type="amp" level="tag" identifier="basic-polyphony-on"
+            parameter="TAG_ENABLED"
+            translation="fixed_value" translationValue="false" />
+          <binding type="amp" level="tag" identifier="shimmer-polyphony-on" parameter="TAG_ENABLED"
+            translation="fixed_value" translationValue="false" />
+          <binding type="amp" level="tag" identifier="basic-polyphony-off"
+            parameter="TAG_ENABLED"
+            translation="fixed_value" translationValue="true" />
+          <binding type="amp" level="tag" identifier="shimmer-polyphony-off" parameter="TAG_ENABLED"
+            translation="fixed_value" translationValue="true" />
+        </state>
+        <state name="Legato On"
+          mainImage="img/red_on.png"
+          hoverImage="img/red_on.png"
+          clickImage="img/red_off.png">
+          <binding type="amp" level="tag" identifier="basic-polyphony-on"
+            parameter="TAG_ENABLED"
+            translation="fixed_value" translationValue="true" />
+          <binding type="amp" level="tag" identifier="shimmer-polyphony-on" parameter="TAG_ENABLED"
+            translation="fixed_value" translationValue="true" />
+          <binding type="amp" level="tag" identifier="basic-polyphony-off"
+            parameter="TAG_ENABLED"
+            translation="fixed_value" translationValue="false" />
+          <binding type="amp" level="tag" identifier="shimmer-polyphony-off" parameter="TAG_ENABLED"
+            translation="fixed_value" translationValue="false" />
+        </state>
+      </button>
+
+      <!-- AMP VELOCITY BUTTON-->
+      <button x="322" y="166" width="&controlMiniSize;"
+        height="&controlMiniSize;"
+        style="image">
+        <state name="Amp Vel Off"
+          mainImage="img/red_off.png"
+          hoverImage="img/red_off.png"
+          clickImage="img/red_on.png">
+          <binding type="amp" level="instrument" parameter="AMP_VEL_TRACK"
+            translation="fixed_value" translationValue="0" />
+        </state>
+        <state name="Legato On"
+          mainImage="img/red_on.png"
+          hoverImage="img/red_on.png"
+          clickImage="img/red_off.png">
+          <binding type="amp" level="instrument" parameter="AMP_VEL_TRACK"
+            translation="fixed_value" translationValue="1" />
+        </state>
+      </button>
+
+      <!-- DRIVE -->
+      <control x="422" y="&controlFirstRowY;" width="&controlSize;" height="&controlSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="1" maxValue="4" value="1" parameterName="Drive">
+        <binding type="effect" level="instrument" effectIndex="0" parameter="FX_DRIVE"
+          translation="linear" />
+        <binding type="effect" level="instrument" effectIndex="0"
+          parameter="FX_OUTPUT_LEVEL"
+          translation="linear" translationOutputMin="1" translationOutputMax="0.35" />
+      </control>
+
+      <!-- DRIVE BOOST -->
+      <control x="480" y="&controlFirstRowY;" width="&controlSize;" height="&controlSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0" maxValue="1" value="0" parameterName="Drive Boost">
+        <binding type="effect" level="instrument" effectIndex="0"
+          parameter="FX_DRIVE_BOOST" translation="linear" />
+      </control>
+
+      <!-- TREMOLO MIX -->
+      <control x="556" y="&controlFirstRowY;" width="&controlSize;" height="&controlSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0" maxValue="1" value="0" parameterName="Tremolo Mix">
+        <binding type="modulator" level="instrument" modulatorIndex="0" parameter="MOD_AMOUNT"
+          translationOutputMin="0" translationOutputMax="1" />
+      </control>
+
+      <!-- TREMOLO SPEED -->
+      <control x="613" y="&controlFirstRowY;" width="&controlSize;" height="&controlSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0.01" maxValue="15" value="3" parameterName="Tremolo Speed">
+        <binding type="modulator" level="instrument" modulatorIndex="0" parameter="FREQUENCY"
+          translationOutputMin="0.01" translationOutputMax="15" />
+      </control>
+
+      <!-- CHORUS / PHASER SWITCH-->
+      <button x="694" y="95" width="&switchSize;" height="&switchSize;" style="image">
+        <state name="Chorus"
+          mainImage="img/metal_switch_horizontal_left.png"
+          hoverImage="img/metal_switch_horizontal_left.png"
+          clickImage="img/metal_switch_horizontal_right.png">
+          <binding type="effect" level="instrument" effectIndex="2" position="2" parameter="ENABLED"
+            translation="fixed_value" translationValue="true" />
+          <binding type="effect" level="instrument" effectIndex="3" position="3" parameter="ENABLED"
+            translation="fixed_value" translationValue="false" />
+        </state>
+        <state name="Phaser"
+          mainImage="img/metal_switch_horizontal_right.png"
+          hoverImage="img/metal_switch_horizontal_right.png"
+          clickImage="img/metal_switch_horizontal_left.png">
+          <binding type="effect" level="instrument" effectIndex="3" position="3" parameter="ENABLED"
+            translation="fixed_value" translationValue="true" />
+          <binding type="effect" level="instrument" effectIndex="2" position="2" parameter="ENABLED"
+            translation="fixed_value" translationValue="false" />
+        </state>
+      </button>
+
+      <!-- MODULATION MIX -->
+      <control x="690" y="&controlSecondRowY;" width="&controlSize;" height="&controlSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0.0" maxValue="1.0" value="0" parameterName="Modulation Mix">
+        <binding type="effect" level="instrument" effectIndex="2" position="2" parameter="FX_MIX" />
+        <binding type="effect" level="instrument" effectIndex="3" position="3" parameter="FX_MIX" />
+      </control>
+
+      <!-- MODULATION RATE -->
+      <control x="754" y="&controlMiniSecondRowY1;" width="&controlMiniSize;"
+        height="&controlMiniSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0.0" maxValue="10.0" value="0.2" parameterName="Modulation Rate">
+        <binding type="effect" level="instrument" effectIndex="2" position="2"
+          parameter="FX_MOD_RATE" />
+        <binding type="effect" level="instrument" effectIndex="3" position="3"
+          parameter="FX_MOD_RATE" />
+      </control>
+
+      <!-- MODULATION DEPTH -->
+      <control x="754" y="&controlMiniSecondRowY2;" width="&controlMiniSize;"
+        height="&controlMiniSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0.0" maxValue="1" value="0.2" parameterName="Modulation Depth">
+        <binding type="effect" level="instrument" effectIndex="2" position="2"
+          parameter="FX_MOD_DEPTH" />
+        <binding type="effect" level="instrument" effectIndex="3" position="3"
+          parameter="FX_MOD_DEPTH" />
+      </control>
+
+      <!-- REVERB -->
+      <control x="422" y="&controlSecondRowY;" width="&controlSize;" height="&controlSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0" maxValue="1.0" value="0.15" parameterName="Reverb Mix">
+        <binding type="effect" level="instrument" effectIndex="4" position="4"
+          parameter="FX_REVERB_WET_LEVEL" translation="linear"
+          translationOutputMin="0" translationOutputMax="1" />
+      </control>
+
+      <!-- REVERB ROOM SIZE -->
+      <control x="490" y="&controlMiniSecondRowY1;" width="&controlMiniSize;"
+        height="&controlMiniSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0" maxValue="1.0" value="0.6" parameterName="Reverb Room Size">
+        <binding type="effect" level="instrument" effectIndex="4" position="4"
+          parameter="FX_REVERB_ROOM_SIZE" translation="linear"
+          translationOutputMin="0" translationOutputMax="1" />
+      </control>
+
+      <!-- REVERB DAMPING -->
+      <control x="490" y="&controlMiniSecondRowY2;" width="&controlMiniSize;"
+        height="&controlMiniSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0" maxValue="1.0" value="0.75" parameterName="Reverb Damping">
+        <binding type="effect" level="instrument" effectIndex="4" position="4"
+          parameter="FX_REVERB_DAMPING" translation="linear"
+          translationOutputMin="0" translationOutputMax="1" />
+      </control>
+
+      <!-- DELAY WET LEVEL -->
+      <control x="556" y="&controlSecondRowY;" width="&controlSize;" height="&controlSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0" maxValue="1" value="0.12" parameterName="Delay Level">
+        <binding type="effect" level="instrument" effectIndex="5" position="5"
+          parameter="FX_WET_LEVEL" translation="linear"
+          translationOutputMin="0" translationOutputMax="1" />
+      </control>
+
+      <!-- DELAY TIME-->
+      <control x="622" y="&controlMiniSecondRowY1;" width="&controlMiniSize;"
+        height="&controlMiniSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0.1" maxValue="10" value="3.38" parameterName="Tempo">
+        <binding type="effect" level="instrument" effectIndex="5" position="5"
+          parameter="FX_DELAY_TIME" translation="linear"
+          translationOutputMin="0" translationOutputMax="1" />
+      </control>
+
+      <!-- DELAY FEEDBACK -->
+      <control x="622" y="&controlMiniSecondRowY2;" width="&controlMiniSize;"
+        height="&controlMiniSize;"
+        style="&controlStyle;" customSkinImage="&customSkinImage;"
+        customSkinNumFrames="&customSkinNumFrames;" mouseDragSensitivity="&mouseDragSensitivity;"
+        minValue="0" maxValue="1" value="0.43" parameterName="Feedback">
+        <binding type="effect" level="instrument" effectIndex="5" position="5"
+          parameter="FX_FEEDBACK" translation="linear"
+          translationOutputMin="0" translationOutputMax="1" />
+      </control>
+    </tab>
+    <keyboard>
+      <color loNote="24" hiNote="96" color="FFb5cd88" />
+    </keyboard>
+  </ui>
+
+  <!-- EFFECTS -->
+
+  <effects>
+    <effect type="wave_shaper" drive="1" driveBoost="0" outputLevel="0.8" />
+    <effect type="lowpass" frequency="22000.0" resonance="1" />
+    <effect type="phaser" mix="0.0" modDepth="0.4" modRate="0.4" centerFrequency="500"
+      feedback="0.7" />
+    <effect type="chorus" mix="0.0" modDepth="0.4" modRate="0.2" />
+    <effect type="reverb" roomSize="0.7" damping="0.3" wetLevel="0" />
+    <effect type="delay" delayTime="3" stereoOffset="0.02" feedback="0.2" wetLevel="0" />
+  </effects>
+
+  <!-- SAMPLES -->
+
+  <groups>
+    <group loVel="0" hiVel="127" tags="basic-polyphony-on" silencingMode="normal"
+      silencedByTags="basic-polyphony-on" trigger="first" glideMode="legato" glideTime="0.07">
+      <sample trigger="attack" rootNote="24" loNote="24" hiNote="25"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-024-c0.wav" />
+      <sample trigger="attack" rootNote="27" loNote="26" hiNote="28"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-027-d#0.wav" />
+      <sample trigger="attack" rootNote="30" loNote="29" hiNote="31"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-030-f#0.wav" />
+      <sample trigger="attack" rootNote="33" loNote="32" hiNote="34"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-033-a0.wav" />
+      <sample trigger="attack" rootNote="36" loNote="35" hiNote="37"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-036-c1.wav" />
+      <sample trigger="attack" rootNote="39" loNote="38" hiNote="40"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-039-d#1.wav" />
+      <sample trigger="attack" rootNote="42" loNote="41" hiNote="43"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-042-f#1.wav" />
+      <sample trigger="attack" rootNote="45" loNote="44" hiNote="46"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-045-a1.wav" />
+      <sample trigger="attack" rootNote="48" loNote="47" hiNote="49"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-048-c2.wav" />
+      <sample trigger="attack" rootNote="51" loNote="50" hiNote="52"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-051-d#2.wav" />
+      <sample trigger="attack" rootNote="54" loNote="53" hiNote="55"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-054-f#2.wav" />
+      <sample trigger="attack" rootNote="57" loNote="56" hiNote="58"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-057-a2.wav" />
+      <sample trigger="attack" rootNote="60" loNote="59" hiNote="61"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-060-c3.wav" />
+      <sample trigger="attack" rootNote="63" loNote="62" hiNote="64"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-063-d#3.wav" />
+      <sample trigger="attack" rootNote="66" loNote="65" hiNote="67"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-066-f#3.wav" />
+      <sample trigger="attack" rootNote="69" loNote="68" hiNote="70"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-069-a3.wav" />
+      <sample trigger="attack" rootNote="72" loNote="71" hiNote="73"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-072-c4.wav" />
+      <sample trigger="attack" rootNote="75" loNote="74" hiNote="76"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-075-d#4.wav" />
+      <sample trigger="attack" rootNote="78" loNote="77" hiNote="79"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-078-f#4.wav" />
+      <sample trigger="attack" rootNote="81" loNote="80" hiNote="82"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-081-a4.wav" />
+      <sample trigger="attack" rootNote="84" loNote="83" hiNote="85"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-084-c5.wav" />
+      <sample trigger="attack" rootNote="87" loNote="86" hiNote="88"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-087-d#5.wav" />
+      <sample trigger="attack" rootNote="90" loNote="89" hiNote="91"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-090-f#5.wav" />
+      <sample trigger="attack" rootNote="93" loNote="92" hiNote="94"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-093-a5.wav" />
+      <sample trigger="attack" rootNote="96" loNote="95" hiNote="96"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-096-c6.wav" />
+      <effects>
+      </effects>
+    </group>
+    <group loVel="0" hiVel="127" tags="shimmer-polyphony-on" silencingMode="normal"
+      silencedByTags="basic-polyphony-on" trigger="first" glideMode="legato" glideTime="0.07">
+      <sample trigger="attack" rootNote="24" loNote="24" hiNote="25"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-024-c0.wav" />
+      <sample trigger="attack" rootNote="27" loNote="26" hiNote="28"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-027-d#0.wav" />
+      <sample trigger="attack" rootNote="30" loNote="29" hiNote="31"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-030-f#0.wav" />
+      <sample trigger="attack" rootNote="33" loNote="32" hiNote="34"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-033-a0.wav" />
+      <sample trigger="attack" rootNote="36" loNote="35" hiNote="37"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-036-c1.wav" />
+      <sample trigger="attack" rootNote="39" loNote="38" hiNote="40"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-039-d#1.wav" />
+      <sample trigger="attack" rootNote="42" loNote="41" hiNote="43"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-042-f#1.wav" />
+      <sample trigger="attack" rootNote="45" loNote="44" hiNote="46"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-045-a1.wav" />
+      <sample trigger="attack" rootNote="48" loNote="47" hiNote="49"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-048-c2.wav" />
+      <sample trigger="attack" rootNote="51" loNote="50" hiNote="52"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-051-d#2.wav" />
+      <sample trigger="attack" rootNote="54" loNote="53" hiNote="55"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-054-f#2.wav" />
+      <sample trigger="attack" rootNote="57" loNote="56" hiNote="58"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-057-a2.wav" />
+      <sample trigger="attack" rootNote="60" loNote="59" hiNote="61"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-060-c3.wav" />
+      <sample trigger="attack" rootNote="63" loNote="62" hiNote="64"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-063-d#3.wav" />
+      <sample trigger="attack" rootNote="66" loNote="65" hiNote="67"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-066-f#3.wav" />
+      <sample trigger="attack" rootNote="69" loNote="68" hiNote="70"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-069-a3.wav" />
+      <sample trigger="attack" rootNote="72" loNote="71" hiNote="73"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-072-c4.wav" />
+      <sample trigger="attack" rootNote="75" loNote="74" hiNote="76"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-075-d#4.wav" />
+      <sample trigger="attack" rootNote="78" loNote="77" hiNote="79"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-078-f#4.wav" />
+      <sample trigger="attack" rootNote="81" loNote="80" hiNote="82"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-081-a4.wav" />
+      <sample trigger="attack" rootNote="84" loNote="83" hiNote="85"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-084-c5.wav" />
+      <sample trigger="attack" rootNote="87" loNote="86" hiNote="88"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-087-d#5.wav" />
+      <sample trigger="attack" rootNote="90" loNote="89" hiNote="91"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-090-f#5.wav" />
+      <sample trigger="attack" rootNote="93" loNote="92" hiNote="94"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-093-a5.wav" />
+      <sample trigger="attack" rootNote="96" loNote="95" hiNote="96"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-096-c6.wav" />
+      <effects>
+      </effects>
+    </group>
+    <group loVel="0" hiVel="127" tags="basic-polyphony-off">
+      <sample trigger="attack" rootNote="24" loNote="24" hiNote="25"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-024-c0.wav" />
+      <sample trigger="attack" rootNote="27" loNote="26" hiNote="28"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-027-d#0.wav" />
+      <sample trigger="attack" rootNote="30" loNote="29" hiNote="31"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-030-f#0.wav" />
+      <sample trigger="attack" rootNote="33" loNote="32" hiNote="34"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-033-a0.wav" />
+      <sample trigger="attack" rootNote="36" loNote="35" hiNote="37"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-036-c1.wav" />
+      <sample trigger="attack" rootNote="39" loNote="38" hiNote="40"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-039-d#1.wav" />
+      <sample trigger="attack" rootNote="42" loNote="41" hiNote="43"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-042-f#1.wav" />
+      <sample trigger="attack" rootNote="45" loNote="44" hiNote="46"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-045-a1.wav" />
+      <sample trigger="attack" rootNote="48" loNote="47" hiNote="49"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-048-c2.wav" />
+      <sample trigger="attack" rootNote="51" loNote="50" hiNote="52"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-051-d#2.wav" />
+      <sample trigger="attack" rootNote="54" loNote="53" hiNote="55"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-054-f#2.wav" />
+      <sample trigger="attack" rootNote="57" loNote="56" hiNote="58"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-057-a2.wav" />
+      <sample trigger="attack" rootNote="60" loNote="59" hiNote="61"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-060-c3.wav" />
+      <sample trigger="attack" rootNote="63" loNote="62" hiNote="64"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-063-d#3.wav" />
+      <sample trigger="attack" rootNote="66" loNote="65" hiNote="67"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-066-f#3.wav" />
+      <sample trigger="attack" rootNote="69" loNote="68" hiNote="70"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-069-a3.wav" />
+      <sample trigger="attack" rootNote="72" loNote="71" hiNote="73"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-072-c4.wav" />
+      <sample trigger="attack" rootNote="75" loNote="74" hiNote="76"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-075-d#4.wav" />
+      <sample trigger="attack" rootNote="78" loNote="77" hiNote="79"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-078-f#4.wav" />
+      <sample trigger="attack" rootNote="81" loNote="80" hiNote="82"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-081-a4.wav" />
+      <sample trigger="attack" rootNote="84" loNote="83" hiNote="85"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-084-c5.wav" />
+      <sample trigger="attack" rootNote="87" loNote="86" hiNote="88"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-087-d#5.wav" />
+      <sample trigger="attack" rootNote="90" loNote="89" hiNote="91"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-090-f#5.wav" />
+      <sample trigger="attack" rootNote="93" loNote="92" hiNote="94"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-093-a5.wav" />
+      <sample trigger="attack" rootNote="96" loNote="95" hiNote="96"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-096-c6.wav" />
+      <effects>
+      </effects>
+    </group>
+    <group loVel="0" hiVel="127" tags="shimmer-polyphony-off">
+      <sample trigger="attack" rootNote="24" loNote="24" hiNote="25"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-024-c0.wav" />
+      <sample trigger="attack" rootNote="27" loNote="26" hiNote="28"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-027-d#0.wav" />
+      <sample trigger="attack" rootNote="30" loNote="29" hiNote="31"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-030-f#0.wav" />
+      <sample trigger="attack" rootNote="33" loNote="32" hiNote="34"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-033-a0.wav" />
+      <sample trigger="attack" rootNote="36" loNote="35" hiNote="37"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-036-c1.wav" />
+      <sample trigger="attack" rootNote="39" loNote="38" hiNote="40"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-039-d#1.wav" />
+      <sample trigger="attack" rootNote="42" loNote="41" hiNote="43"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-042-f#1.wav" />
+      <sample trigger="attack" rootNote="45" loNote="44" hiNote="46"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-045-a1.wav" />
+      <sample trigger="attack" rootNote="48" loNote="47" hiNote="49"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-048-c2.wav" />
+      <sample trigger="attack" rootNote="51" loNote="50" hiNote="52"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-051-d#2.wav" />
+      <sample trigger="attack" rootNote="54" loNote="53" hiNote="55"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-054-f#2.wav" />
+      <sample trigger="attack" rootNote="57" loNote="56" hiNote="58"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-057-a2.wav" />
+      <sample trigger="attack" rootNote="60" loNote="59" hiNote="61"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-060-c3.wav" />
+      <sample trigger="attack" rootNote="63" loNote="62" hiNote="64"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-063-d#3.wav" />
+      <sample trigger="attack" rootNote="66" loNote="65" hiNote="67"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-066-f#3.wav" />
+      <sample trigger="attack" rootNote="69" loNote="68" hiNote="70"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-069-a3.wav" />
+      <sample trigger="attack" rootNote="72" loNote="71" hiNote="73"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-072-c4.wav" />
+      <sample trigger="attack" rootNote="75" loNote="74" hiNote="76"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-075-d#4.wav" />
+      <sample trigger="attack" rootNote="78" loNote="77" hiNote="79"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-078-f#4.wav" />
+      <sample trigger="attack" rootNote="81" loNote="80" hiNote="82"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-081-a4.wav" />
+      <sample trigger="attack" rootNote="84" loNote="83" hiNote="85"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-084-c5.wav" />
+      <sample trigger="attack" rootNote="87" loNote="86" hiNote="88"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-087-d#5.wav" />
+      <sample trigger="attack" rootNote="90" loNote="89" hiNote="91"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-090-f#5.wav" />
+      <sample trigger="attack" rootNote="93" loNote="92" hiNote="94"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-093-a5.wav" />
+      <sample trigger="attack" rootNote="96" loNote="95" hiNote="96"
+        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-096-c6.wav" />
+      <effects>
+      </effects>
+    </group>
+  </groups>
+
+  <!-- MIDI -->
+
+  <midi>
+    <cc number="1">
+      <binding level="ui" type="control" position="0" parameter="VALUE" translation="linear"
+        translationOutputMin="0" translationOutputMax="1" />
+    </cc>
+  </midi>
+
+  <!-- MODULATORS -->
+
+  <modulators>
+    <lfo shape="sine" frequency="3" modAmount="1.0">
+      <binding type="amp" level="instrument" position="0" parameter="AMP_VOLUME" modBehavior="add"
+        translation="linear" translationOutputMin="0" translationOutputMax="1" />
+    </lfo>
+  </modulators>
+
+  <!-- TAGS -->
+
+  <tags>
+    <tag name="basic-polyphony-on" polyphony="1" />
+    <tag name="shimmer-polyphony-on" polyphony="1" />
+  </tags>
+</DecentSampler>
