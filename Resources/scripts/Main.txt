@@ -123,6 +123,22 @@ $env_idx :=find_mod($grp_idx, "ENV_AHDSR")
 
 {----- UI CONTROLS -----}
 
+{ SHIMMER - SLIDER }
+declare ui_slider $Shimmer($sliderZeroDBMinValue, $sliderZeroDBMaxValue)
+make_persistent($Shimmer)
+declare $ShimmerId := get_ui_id($Shimmer)
+set_control_par_str($ShimmerId, $CONTROL_PAR_PICTURE, "knob_big")
+set_control_par($ShimmerId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+
+{ DYNAMICS - BUTTON}
+declare ui_switch $Dynamics
+make_persistent($Dynamics)
+declare $DynamicsId := get_ui_id($Dynamics)
+set_control_par_str($DynamicsId, $CONTROL_PAR_PICTURE, "button_mini")
+set_control_par_str($DynamicsId, $CONTROL_PAR_TEXT, "")
+set_control_par($DynamicsId, $CONTROL_PAR_WIDTH, $ButtonWidth)
+set_control_par($DynamicsId, $CONTROL_PAR_HEIGHT, $ButtonHeight)
+
 { VOLUME - SLIDER }
 declare ui_slider $Volume(1, $sliderZeroDBMaxValue)
 make_persistent($Volume)
@@ -285,13 +301,13 @@ set_control_par_str($Reverb_SizeId, $CONTROL_PAR_PICTURE, "knob_medium")
 set_control_par($Reverb_SizeId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
 set_control_par($Reverb_SizeId,$CONTROL_PAR_DEFAULT_VALUE,800000)
 
-{ REVERB DAMPING - SLIDER }
-declare ui_slider $Reverb_Damping(1, 1000000)
-make_persistent($Reverb_Damping)
-declare $Reverb_DampingId := get_ui_id($Reverb_Damping)
-set_control_par_str($Reverb_DampingId, $CONTROL_PAR_PICTURE, "knob_medium")
-set_control_par($Reverb_DampingId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
-set_control_par($Reverb_DampingId,$CONTROL_PAR_DEFAULT_VALUE,50000)
+{ REVERB TIME - SLIDER }
+declare ui_slider $Reverb_Time(1, 1000000)
+make_persistent($Reverb_Time)
+declare $Reverb_TimeId := get_ui_id($Reverb_Time)
+set_control_par_str($Reverb_TimeId, $CONTROL_PAR_PICTURE, "knob_medium")
+set_control_par($Reverb_TimeId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($Reverb_TimeId,$CONTROL_PAR_DEFAULT_VALUE,50000)
 
 { CHORUS MIX - SLIDER }
 declare ui_slider $Chorus_Mix(1, 397000)
@@ -316,22 +332,6 @@ declare $Chorus_SpeedId := get_ui_id($Chorus_Speed)
 set_control_par_str($Chorus_SpeedId, $CONTROL_PAR_PICTURE, "knob_medium")
 set_control_par($Chorus_SpeedId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
 set_control_par($Chorus_SpeedId,$CONTROL_PAR_DEFAULT_VALUE,200000)
-
-{ SHIMMER - SLIDER }
-declare ui_slider $Shimmer($sliderZeroDBMinValue, $sliderZeroDBMaxValue)
-make_persistent($Shimmer)
-declare $ShimmerId := get_ui_id($Shimmer)
-set_control_par_str($ShimmerId, $CONTROL_PAR_PICTURE, "knob_big")
-set_control_par($ShimmerId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
-
-{ DYNAMICS - BUTTON}
-declare ui_switch $Dynamics
-make_persistent($Dynamics)
-declare $DynamicsId := get_ui_id($Dynamics)
-set_control_par_str($DynamicsId, $CONTROL_PAR_PICTURE, "button_mini")
-set_control_par_str($DynamicsId, $CONTROL_PAR_TEXT, "")
-set_control_par($DynamicsId, $CONTROL_PAR_WIDTH, $ButtonWidth)
-set_control_par($DynamicsId, $CONTROL_PAR_HEIGHT, $ButtonHeight)
 
 
 { ARPEGGIATOR }
@@ -542,7 +542,7 @@ set_control_help($Delay_Time,"Delay Time: Adjusts the delay time.")
 set_control_help($Delay_Feedback,"Delay Feedback: Adjusts the amount of delay repetitions.")
 set_control_help($Reverb_Mix,"Reverb Mix: Adjusts the amount of reverb.")
 set_control_help($Reverb_Size,"Reverb Size: Adjusts the size of the reverb.")
-set_control_help($Reverb_Damping,"Reverb Damping: Adjusts the damping of the reverb.")
+set_control_help($Reverb_Time,"Reverb TIME: Adjusts the reverb time.")
 set_control_help($Chorus_Mix,"Chorus Mix: Adjusts the amount of chorus.")
 set_control_help($Chorus_Depth,"Chorus Depth: Adjusts the depth of the chorus.")
 set_control_help($Chorus_Speed,"Chorus Spree: Adjusts the speed of the chorus.")
@@ -573,7 +573,7 @@ move_control_px($Pan, 100,47)
 move_control_px($Tune, 146,47)
 move_control_px($Glide_Time, 192,47)
 move_control_px($Dynamics, 240,34)
-move_control_px($Mono, 240,68)
+move_control_px($Mono, 240,70)
 move_control_px($Attack, 26,137)
 move_control_px($Decay, 92,137)
 move_control_px($Sustain, 158,137)
@@ -588,7 +588,7 @@ move_control_px($Delay_Time, 92,231)
 move_control_px($Delay_Feedback, 158,231)
 move_control_px($Reverb_Mix, 224,231)
 move_control_px($Reverb_Size, 290,231)
-move_control_px($Reverb_Damping, 356,231)
+move_control_px($Reverb_Time, 356,231)
 move_control_px($Chorus_Mix, 422,231)
 move_control_px($Chorus_Depth, 488,231)
 move_control_px($Chorus_Speed, 554,231)
@@ -1260,24 +1260,23 @@ end on
 
 { TRANSPOSE - CONTROL }
 on ui_control($Tune)
- set_engine_par($ENGINE_PAR_TUNE,500000 + ($Tune * 13889),-1,-1,-1)
+set_engine_par($ENGINE_PAR_TUNE,500000 + ($Tune * 13889),-1,-1,-1)
 end on
 
 { SHIMMER - CONTROL }
 on ui_control($Shimmer)
-set_engine_par($ENGINE_PAR_VOLUME, $Shimmer, 1, -1, -1)
-set_engine_par($ENGINE_PAR_VOLUME, abs($Shimmer - $sliderZeroDBMaxValue), 0, -1, -1)
+set_controller(1, $Shimmer/4960)
 end on
 
 { MONO - CONTROL }
 on ui_control($Mono)
-    pgs_set_key_val(MONO, 0, $Mono)
-    $MonoTemp := $Mono
+pgs_set_key_val(MONO, 0, $Mono)
+$MonoTemp := $Mono
 end on
 
 { GLIDE TIME - CONTROL }
 on ui_control($Glide_Time)
-    pgs_set_key_val(GLIDETIME, 0, $Glide_Time)
+pgs_set_key_val(GLIDETIME, 0, $Glide_Time)
 end on
 
 { ATTACK - CONTROL }
@@ -1375,8 +1374,8 @@ set_engine_par($ENGINE_PAR_RV2_SIZE, $Reverb_Size, -1, 3, 1)
 end on
 
 { REVERB DAMPING - CONTROL }
-on ui_control($Reverb_Damping)
-set_engine_par($ENGINE_PAR_RV2_DAMPING, $Reverb_Damping, -1, 3, 1)
+on ui_control($Reverb_Time)
+set_engine_par($ENGINE_PAR_RV2_TIME, $Reverb_Time, -1, 3, 1)
 end on
 
 { CHORUS MIX - CONTROL }
@@ -1467,11 +1466,11 @@ end on
 
 { SHIMMER - MOD WHEEL CONTROL }
 on controller
-    { Mod Wheel }
+
     if ($CC_NUM=1)
         $Shimmer := %CC[1]*4960
-        set_engine_par($ENGINE_PAR_VOLUME, $Shimmer, 1, -1, -1)
-        set_engine_par($ENGINE_PAR_VOLUME, abs($Shimmer - $sliderZeroDBMaxValue), 0, -1, -1)
+       {  set_engine_par($ENGINE_PAR_VOLUME, $Shimmer, 1, -1, -1)
+        set_engine_par($ENGINE_PAR_VOLUME, abs($Shimmer - $sliderZeroDBMaxValue), 0, -1, -1) }
     end if
 end on
 
