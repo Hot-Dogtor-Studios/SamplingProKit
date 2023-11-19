@@ -4,16 +4,14 @@
 {------- https://hotdogtor.com -------}
 
 on init
-message("MICROSHIMMER (FREE EDITION) v1.0")
+message("MICROSHIMMER - FREE EDITION v1.0")
 make_perfview
 set_ui_height_px(480)
 set_ui_width_px(633)
 set_control_par_str($INST_WALLPAPER_ID,$CONTROL_PAR_PICTURE,"background")
 set_control_par_str($INST_ICON_ID,$CONTROL_PAR_PICTURE,"logo")
 
-{----- INIT -----}
-
-{ CONSTANTS }  
+{ CONSTANTS & VARIABLES }  
 declare const $REC_TIME_TRANSPORT_RUNNING := 10
 declare const $REC_TIME_TRANSPORT_STOPPED := 30
 declare const $LATCH_TIME := 300
@@ -73,7 +71,6 @@ declare %sorted_buffer[128]
 declare %sorted_vel_buffer[128]
 declare %vel_buffer[128] := (-1)
 declare $ScaleByVel := 0
-
 declare !rates[9]
 !rates[0] := " 1/64 T"
 !rates[1] := " 1/32 T"
@@ -84,7 +81,6 @@ declare !rates[9]
 !rates[6] := " 1/8"
 !rates[7] := " 1/4 T"
 !rates[8] := " 1/4"
-
 declare !noteOrders[7]
 !noteOrders[0] := "As Played"
 !noteOrders[1] := "Up"
@@ -93,7 +89,6 @@ declare !noteOrders[7]
 !noteOrders[4] := "Down - Up"
 !noteOrders[5] := "Random"
 !noteOrders[6] := "Chord"
-
 declare !tableOrders[6]
 !tableOrders[0] := ">>"
 !tableOrders[1] := "<<"
@@ -101,21 +96,13 @@ declare !tableOrders[6]
 !tableOrders[3] := "<< >>"
 !tableOrders[4] := "???"
 !tableOrders[5] := "Host Sync"
+declare $sliderSensitivity := -350
+declare $sliderZeroDBMaxValue := 630000
+declare $sliderZeroDBMinValue := 0
+declare $ButtonWidth := 32
+declare $ButtonHeight := 32
 
-
-declare $sliderSensitivity
-declare $sliderZeroDBMaxValue
-declare $sliderZeroDBMinValue
-$sliderSensitivity := -350
-$sliderZeroDBMinValue := 0
-$sliderZeroDBMaxValue := 630000
-
-declare $ButtonWidth
-declare $ButtonHeight
-$ButtonWidth := 32
-$ButtonHeight := 32
-
-{ AHDSR INIT CODE (only need one of these)}
+{ AHDSR INIT CODE }
 declare $grp_idx
 $grp_idx :=0
 declare $env_idx
@@ -130,6 +117,15 @@ declare $ShimmerId := get_ui_id($Shimmer)
 set_control_par_str($ShimmerId, $CONTROL_PAR_PICTURE, "knob_big")
 set_control_par($ShimmerId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
 
+{ VOLUME - SLIDER }
+declare ui_slider $Volume(1, $sliderZeroDBMaxValue)
+$Volume := get_engine_par($ENGINE_PAR_VOLUME, -1, -1, -1)
+make_persistent($Volume)
+declare $VolumeId := get_ui_id($Volume)
+set_control_par_str($VolumeId, $CONTROL_PAR_PICTURE, "knob_big")
+set_control_par($VolumeId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
+set_control_par($VolumeId,$CONTROL_PAR_DEFAULT_VALUE,500000)
+
 { DYNAMICS - BUTTON}
 declare ui_switch $Dynamics
 make_persistent($Dynamics)
@@ -138,14 +134,6 @@ set_control_par_str($DynamicsId, $CONTROL_PAR_PICTURE, "button_mini")
 set_control_par_str($DynamicsId, $CONTROL_PAR_TEXT, "")
 set_control_par($DynamicsId, $CONTROL_PAR_WIDTH, $ButtonWidth)
 set_control_par($DynamicsId, $CONTROL_PAR_HEIGHT, $ButtonHeight)
-
-{ VOLUME - SLIDER }
-declare ui_slider $Volume(1, $sliderZeroDBMaxValue)
-make_persistent($Volume)
-declare $VolumeId := get_ui_id($Volume)
-set_control_par_str($VolumeId, $CONTROL_PAR_PICTURE, "knob_big")
-set_control_par($VolumeId,$CONTROL_PAR_MOUSE_BEHAVIOUR,$sliderSensitivity)
-set_control_par($VolumeId,$CONTROL_PAR_DEFAULT_VALUE,500000)
 
 { PAN - SLIDER }
 declare ui_slider $Pan(1, 1000000)
@@ -541,8 +529,8 @@ set_control_help($Delay_Mix,"Delay Mix: Adjusts the amount of delay.")
 set_control_help($Delay_Time,"Delay Time: Adjusts the delay time.")
 set_control_help($Delay_Feedback,"Delay Feedback: Adjusts the amount of delay repetitions.")
 set_control_help($Reverb_Mix,"Reverb Mix: Adjusts the amount of reverb.")
-set_control_help($Reverb_Size,"Reverb Size: Adjusts the size of the reverb.")
 set_control_help($Reverb_Time,"Reverb TIME: Adjusts the reverb time.")
+set_control_help($Reverb_Size,"Reverb Size: Adjusts the size of the reverb.")
 set_control_help($Chorus_Mix,"Chorus Mix: Adjusts the amount of chorus.")
 set_control_help($Chorus_Depth,"Chorus Depth: Adjusts the depth of the chorus.")
 set_control_help($Chorus_Speed,"Chorus Spree: Adjusts the speed of the chorus.")
@@ -567,6 +555,7 @@ set_control_help($Mono,"Monophony: If ON, the instrument is monophonic, and only
 set_control_help($Glide_Time,"Glide: Adjusts the glide between notes.")
 
 { ----- LAYOUT ----- }
+
 move_control_px($Shimmer, 522,33)
 move_control_px($Volume, 26,33)
 move_control_px($Pan, 100,47)
@@ -587,8 +576,8 @@ move_control_px($Delay_Mix, 26,231)
 move_control_px($Delay_Time, 92,231)
 move_control_px($Delay_Feedback, 158,231)
 move_control_px($Reverb_Mix, 224,231)
-move_control_px($Reverb_Size, 290,231)
-move_control_px($Reverb_Time, 356,231)
+move_control_px($Reverb_Time, 290,231)
+move_control_px($Reverb_Size, 356,231)
 move_control_px($Chorus_Mix, 422,231)
 move_control_px($Chorus_Depth, 488,231)
 move_control_px($Chorus_Speed, 554,231)
@@ -1355,12 +1344,12 @@ end on
 
 { DELAY TIME - CONTROL }
 on ui_control($Delay_Time)
-set_engine_par($ENGINE_PAR_DL_TIME, $Delay_Time, -1, 2, 1)
+set_engine_par($ENGINE_PAR_RDL_TIME, $Delay_Time, -1, 2, 1)
 end on
 
 { DELAY FEEDBACK - CONTROL }
 on ui_control($Delay_Feedback)
-set_engine_par($ENGINE_PAR_DL_FEEDBACK, $Delay_Feedback, -1, 2, 1)
+set_engine_par($ENGINE_PAR_RDL_FEEDBACK, $Delay_Feedback, -1, 2, 1)
 end on
 
 { REVERB MIX - CONTROL }
@@ -1422,55 +1411,51 @@ end on
 
 { ARPEGGIATOR RATE - CONTROL }
 on ui_control($Rate)
-    call ChangeRate()
+call ChangeRate()
 end on
 
 { ARPEGGIATOR GATE - CONTROL }
 on ui_control($Duration)
-    set_text($DurationLabel, $Duration)
+set_text($DurationLabel, $Duration)
 end on
 
 { ARPEGGIATOR SWING - CONTROL }
 on ui_control($Swing)
-    set_text($SwingLabel, $Swing)
+set_text($SwingLabel, $Swing)
 end on
 
 { ARPEGGIATOR OCTAVE - CONTROL }
 on ui_control($Octave)
-    set_text($OctaveLabel, $Octave)
+set_text($OctaveLabel, $Octave)
 end on
 
 { ARPEGGIATOR REPEATS - CONTROL }
 on ui_control($Repeats)
-    set_text($RepeatsLabel, $Repeats)
-     set_control_par_str($RepeatsLabelId, $CONTROL_PAR_TEXT, $Repeats)
-   {  message($Repeats & " " &  $ENGINE_UPTIME ) }
+set_text($RepeatsLabel, $Repeats)
+set_control_par_str($RepeatsLabelId, $CONTROL_PAR_TEXT, $Repeats)
 end on
 
 { ARPEGGIATOR STEPS - CONTROL }
 on ui_control ($Steps)
-    set_table_steps_shown(%Pattern, $Steps)
-    set_table_steps_shown(%Current, $Steps)
-    set_text($StepsLabel, $Steps)
+set_table_steps_shown(%Pattern, $Steps)
+set_table_steps_shown(%Current, $Steps)
+set_text($StepsLabel, $Steps)
 end on
 
 { ARPEGGIATOR NOTE ORDER - CONTROL }
 on ui_control ($NoteOrder)
-   call ChangeNoteOrder()
+call ChangeNoteOrder()
 end on
 
 { ARPEGGIATOR TABLE ORDER - CONTROL }
 on ui_control ($TableOrder)
-   call ChangeTableOrder()
+call ChangeTableOrder()
 end on
 
 { SHIMMER - MOD WHEEL CONTROL }
 on controller
-
     if ($CC_NUM=1)
         $Shimmer := %CC[1]*4960
-       {  set_engine_par($ENGINE_PAR_VOLUME, $Shimmer, 1, -1, -1)
-        set_engine_par($ENGINE_PAR_VOLUME, abs($Shimmer - $sliderZeroDBMaxValue), 0, -1, -1) }
     end if
 end on
 

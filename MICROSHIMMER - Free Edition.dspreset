@@ -360,218 +360,218 @@
     <group loVel="0" hiVel="127" tags="basic-polyphony-on" silencingMode="normal"
       silencedByTags="basic-polyphony-on" trigger="first" glideMode="legato" glideTime="0.07">
       <sample trigger="attack" rootNote="24" loNote="24" hiNote="25"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-024-c0.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-024-c0.wav" />
       <sample trigger="attack" rootNote="27" loNote="26" hiNote="28"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-027-d#0.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-027-d#0.wav" />
       <sample trigger="attack" rootNote="30" loNote="29" hiNote="31"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-030-f#0.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-030-f#0.wav" />
       <sample trigger="attack" rootNote="33" loNote="32" hiNote="34"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-033-a0.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-033-a0.wav" />
       <sample trigger="attack" rootNote="36" loNote="35" hiNote="37"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-036-c1.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-036-c1.wav" />
       <sample trigger="attack" rootNote="39" loNote="38" hiNote="40"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-039-d#1.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-039-d#1.wav" />
       <sample trigger="attack" rootNote="42" loNote="41" hiNote="43"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-042-f#1.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-042-f#1.wav" />
       <sample trigger="attack" rootNote="45" loNote="44" hiNote="46"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-045-a1.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-045-a1.wav" />
       <sample trigger="attack" rootNote="48" loNote="47" hiNote="49"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-048-c2.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-048-c2.wav" />
       <sample trigger="attack" rootNote="51" loNote="50" hiNote="52"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-051-d#2.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-051-d#2.wav" />
       <sample trigger="attack" rootNote="54" loNote="53" hiNote="55"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-054-f#2.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-054-f#2.wav" />
       <sample trigger="attack" rootNote="57" loNote="56" hiNote="58"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-057-a2.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-057-a2.wav" />
       <sample trigger="attack" rootNote="60" loNote="59" hiNote="61"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-060-c3.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-060-c3.wav" />
       <sample trigger="attack" rootNote="63" loNote="62" hiNote="64"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-063-d#3.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-063-d#3.wav" />
       <sample trigger="attack" rootNote="66" loNote="65" hiNote="67"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-066-f#3.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-066-f#3.wav" />
       <sample trigger="attack" rootNote="69" loNote="68" hiNote="70"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-069-a3.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-069-a3.wav" />
       <sample trigger="attack" rootNote="72" loNote="71" hiNote="73"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-072-c4.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-072-c4.wav" />
       <sample trigger="attack" rootNote="75" loNote="74" hiNote="76"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-075-d#4.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-075-d#4.wav" />
       <sample trigger="attack" rootNote="78" loNote="77" hiNote="79"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-078-f#4.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-078-f#4.wav" />
       <sample trigger="attack" rootNote="81" loNote="80" hiNote="82"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-081-a4.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-081-a4.wav" />
       <sample trigger="attack" rootNote="84" loNote="83" hiNote="85"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-084-c5.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-084-c5.wav" />
       <sample trigger="attack" rootNote="87" loNote="86" hiNote="88"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-087-d#5.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-087-d#5.wav" />
       <sample trigger="attack" rootNote="90" loNote="89" hiNote="91"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-090-f#5.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-090-f#5.wav" />
       <sample trigger="attack" rootNote="93" loNote="92" hiNote="94"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-093-a5.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-093-a5.wav" />
       <sample trigger="attack" rootNote="96" loNote="95" hiNote="96"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-096-c6.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-096-c6.wav" />
       <effects>
       </effects>
     </group>
     <group loVel="0" hiVel="127" tags="shimmer-polyphony-on" silencingMode="normal"
       silencedByTags="basic-polyphony-on" trigger="first" glideMode="legato" glideTime="0.07">
       <sample trigger="attack" rootNote="24" loNote="24" hiNote="25"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-024-c0.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-024-c0.wav" />
       <sample trigger="attack" rootNote="27" loNote="26" hiNote="28"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-027-d#0.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-027-d#0.wav" />
       <sample trigger="attack" rootNote="30" loNote="29" hiNote="31"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-030-f#0.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-030-f#0.wav" />
       <sample trigger="attack" rootNote="33" loNote="32" hiNote="34"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-033-a0.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-033-a0.wav" />
       <sample trigger="attack" rootNote="36" loNote="35" hiNote="37"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-036-c1.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-036-c1.wav" />
       <sample trigger="attack" rootNote="39" loNote="38" hiNote="40"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-039-d#1.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-039-d#1.wav" />
       <sample trigger="attack" rootNote="42" loNote="41" hiNote="43"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-042-f#1.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-042-f#1.wav" />
       <sample trigger="attack" rootNote="45" loNote="44" hiNote="46"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-045-a1.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-045-a1.wav" />
       <sample trigger="attack" rootNote="48" loNote="47" hiNote="49"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-048-c2.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-048-c2.wav" />
       <sample trigger="attack" rootNote="51" loNote="50" hiNote="52"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-051-d#2.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-051-d#2.wav" />
       <sample trigger="attack" rootNote="54" loNote="53" hiNote="55"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-054-f#2.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-054-f#2.wav" />
       <sample trigger="attack" rootNote="57" loNote="56" hiNote="58"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-057-a2.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-057-a2.wav" />
       <sample trigger="attack" rootNote="60" loNote="59" hiNote="61"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-060-c3.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-060-c3.wav" />
       <sample trigger="attack" rootNote="63" loNote="62" hiNote="64"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-063-d#3.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-063-d#3.wav" />
       <sample trigger="attack" rootNote="66" loNote="65" hiNote="67"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-066-f#3.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-066-f#3.wav" />
       <sample trigger="attack" rootNote="69" loNote="68" hiNote="70"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-069-a3.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-069-a3.wav" />
       <sample trigger="attack" rootNote="72" loNote="71" hiNote="73"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-072-c4.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-072-c4.wav" />
       <sample trigger="attack" rootNote="75" loNote="74" hiNote="76"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-075-d#4.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-075-d#4.wav" />
       <sample trigger="attack" rootNote="78" loNote="77" hiNote="79"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-078-f#4.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-078-f#4.wav" />
       <sample trigger="attack" rootNote="81" loNote="80" hiNote="82"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-081-a4.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-081-a4.wav" />
       <sample trigger="attack" rootNote="84" loNote="83" hiNote="85"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-084-c5.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-084-c5.wav" />
       <sample trigger="attack" rootNote="87" loNote="86" hiNote="88"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-087-d#5.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-087-d#5.wav" />
       <sample trigger="attack" rootNote="90" loNote="89" hiNote="91"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-090-f#5.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-090-f#5.wav" />
       <sample trigger="attack" rootNote="93" loNote="92" hiNote="94"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-093-a5.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-093-a5.wav" />
       <sample trigger="attack" rootNote="96" loNote="95" hiNote="96"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-096-c6.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-096-c6.wav" />
       <effects>
       </effects>
     </group>
     <group loVel="0" hiVel="127" tags="basic-polyphony-off">
       <sample trigger="attack" rootNote="24" loNote="24" hiNote="25"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-024-c0.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-024-c0.wav" />
       <sample trigger="attack" rootNote="27" loNote="26" hiNote="28"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-027-d#0.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-027-d#0.wav" />
       <sample trigger="attack" rootNote="30" loNote="29" hiNote="31"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-030-f#0.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-030-f#0.wav" />
       <sample trigger="attack" rootNote="33" loNote="32" hiNote="34"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-033-a0.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-033-a0.wav" />
       <sample trigger="attack" rootNote="36" loNote="35" hiNote="37"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-036-c1.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-036-c1.wav" />
       <sample trigger="attack" rootNote="39" loNote="38" hiNote="40"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-039-d#1.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-039-d#1.wav" />
       <sample trigger="attack" rootNote="42" loNote="41" hiNote="43"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-042-f#1.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-042-f#1.wav" />
       <sample trigger="attack" rootNote="45" loNote="44" hiNote="46"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-045-a1.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-045-a1.wav" />
       <sample trigger="attack" rootNote="48" loNote="47" hiNote="49"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-048-c2.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-048-c2.wav" />
       <sample trigger="attack" rootNote="51" loNote="50" hiNote="52"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-051-d#2.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-051-d#2.wav" />
       <sample trigger="attack" rootNote="54" loNote="53" hiNote="55"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-054-f#2.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-054-f#2.wav" />
       <sample trigger="attack" rootNote="57" loNote="56" hiNote="58"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-057-a2.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-057-a2.wav" />
       <sample trigger="attack" rootNote="60" loNote="59" hiNote="61"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-060-c3.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-060-c3.wav" />
       <sample trigger="attack" rootNote="63" loNote="62" hiNote="64"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-063-d#3.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-063-d#3.wav" />
       <sample trigger="attack" rootNote="66" loNote="65" hiNote="67"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-066-f#3.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-066-f#3.wav" />
       <sample trigger="attack" rootNote="69" loNote="68" hiNote="70"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-069-a3.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-069-a3.wav" />
       <sample trigger="attack" rootNote="72" loNote="71" hiNote="73"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-072-c4.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-072-c4.wav" />
       <sample trigger="attack" rootNote="75" loNote="74" hiNote="76"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-075-d#4.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-075-d#4.wav" />
       <sample trigger="attack" rootNote="78" loNote="77" hiNote="79"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-078-f#4.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-078-f#4.wav" />
       <sample trigger="attack" rootNote="81" loNote="80" hiNote="82"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-081-a4.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-081-a4.wav" />
       <sample trigger="attack" rootNote="84" loNote="83" hiNote="85"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-084-c5.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-084-c5.wav" />
       <sample trigger="attack" rootNote="87" loNote="86" hiNote="88"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-087-d#5.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-087-d#5.wav" />
       <sample trigger="attack" rootNote="90" loNote="89" hiNote="91"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-090-f#5.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-090-f#5.wav" />
       <sample trigger="attack" rootNote="93" loNote="92" hiNote="94"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-093-a5.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-093-a5.wav" />
       <sample trigger="attack" rootNote="96" loNote="95" hiNote="96"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-000-096-c6.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-000-096-c6.wav" />
       <effects>
       </effects>
     </group>
     <group loVel="0" hiVel="127" tags="shimmer-polyphony-off">
       <sample trigger="attack" rootNote="24" loNote="24" hiNote="25"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-024-c0.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-024-c0.wav" />
       <sample trigger="attack" rootNote="27" loNote="26" hiNote="28"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-027-d#0.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-027-d#0.wav" />
       <sample trigger="attack" rootNote="30" loNote="29" hiNote="31"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-030-f#0.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-030-f#0.wav" />
       <sample trigger="attack" rootNote="33" loNote="32" hiNote="34"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-033-a0.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-033-a0.wav" />
       <sample trigger="attack" rootNote="36" loNote="35" hiNote="37"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-036-c1.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-036-c1.wav" />
       <sample trigger="attack" rootNote="39" loNote="38" hiNote="40"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-039-d#1.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-039-d#1.wav" />
       <sample trigger="attack" rootNote="42" loNote="41" hiNote="43"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-042-f#1.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-042-f#1.wav" />
       <sample trigger="attack" rootNote="45" loNote="44" hiNote="46"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-045-a1.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-045-a1.wav" />
       <sample trigger="attack" rootNote="48" loNote="47" hiNote="49"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-048-c2.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-048-c2.wav" />
       <sample trigger="attack" rootNote="51" loNote="50" hiNote="52"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-051-d#2.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-051-d#2.wav" />
       <sample trigger="attack" rootNote="54" loNote="53" hiNote="55"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-054-f#2.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-054-f#2.wav" />
       <sample trigger="attack" rootNote="57" loNote="56" hiNote="58"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-057-a2.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-057-a2.wav" />
       <sample trigger="attack" rootNote="60" loNote="59" hiNote="61"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-060-c3.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-060-c3.wav" />
       <sample trigger="attack" rootNote="63" loNote="62" hiNote="64"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-063-d#3.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-063-d#3.wav" />
       <sample trigger="attack" rootNote="66" loNote="65" hiNote="67"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-066-f#3.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-066-f#3.wav" />
       <sample trigger="attack" rootNote="69" loNote="68" hiNote="70"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-069-a3.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-069-a3.wav" />
       <sample trigger="attack" rootNote="72" loNote="71" hiNote="73"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-072-c4.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-072-c4.wav" />
       <sample trigger="attack" rootNote="75" loNote="74" hiNote="76"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-075-d#4.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-075-d#4.wav" />
       <sample trigger="attack" rootNote="78" loNote="77" hiNote="79"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-078-f#4.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-078-f#4.wav" />
       <sample trigger="attack" rootNote="81" loNote="80" hiNote="82"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-081-a4.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-081-a4.wav" />
       <sample trigger="attack" rootNote="84" loNote="83" hiNote="85"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-084-c5.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-084-c5.wav" />
       <sample trigger="attack" rootNote="87" loNote="86" hiNote="88"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-087-d#5.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-087-d#5.wav" />
       <sample trigger="attack" rootNote="90" loNote="89" hiNote="91"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-090-f#5.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-090-f#5.wav" />
       <sample trigger="attack" rootNote="93" loNote="92" hiNote="94"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-093-a5.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-093-a5.wav" />
       <sample trigger="attack" rootNote="96" loNote="95" hiNote="96"
-        path="MICROSHIMMER (FREE EDITION) Samples/MICROSHIMMER-001-096-c6.wav" />
+        path="MICROSHIMMER - Free Edition Samples/MICROSHIMMER-001-096-c6.wav" />
       <effects>
       </effects>
     </group>
