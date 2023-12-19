@@ -15,7 +15,7 @@ This template has MICROSHIMMER (FREE EDITION), an instrument I've created sampli
     - Delay Volume, Time and Feedback
     - Reverb Volume, Time and Size
     - Chorus Volume, Depth and Speed
-- Switch between monophony and polyphony (one or multiple simultanious voices)
+- Switch between monophony and polyphony (one or multiple simultaneous voices)
 - Switch between fixed or dynamic velocity (note dynamics)
 - Glide Time
 - Mix blend between groups of samples (Shimmer)
