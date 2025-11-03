@@ -1,10 +1,10 @@
 
-{------- MICROSHIMMER (FREE EDITION) v1.0 -------}
+{------- RETROSHIMMER (FREE EDITION) v1.0 -------}
 {------- By Hot Dogtor Studios -------}
 {------- https://hotdogtor.com -------}
 
 on init
-message("MICROSHIMMER - FREE EDITION v1.0")
+message("RETROSHIMMER - FREE EDITION v1.0")
 make_perfview
 set_ui_height_px(480)
 set_ui_width_px(633)

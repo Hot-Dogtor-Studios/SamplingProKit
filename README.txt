@@ -1,5 +1,5 @@
 
-# MICROSHIMMER - Free Edition v1.0
+# RETROSHIMMER - Free Edition v1.0
 
 Date: 2023-11-19
 Name: Hot Dogtor
@@ -13,7 +13,7 @@ Profile: https://www.pianobook.co.uk/profile/hotdogtorstudios
 
 ## Using the instrument
 
-MICROSHIMMER is an instrument I've created sampling a great sounding preset from a Korg microKorg.
+RETROSHIMMER is an instrument I've created sampling a great sounding preset from a Korg microKorg.
 This instrument has two groups of samples, one with the dry sound and the other with a Shimmer Reverb effect from a Fractal Audio FM3. 
 The SHIMMER knob is a mix blend between this two groups of samples. This knob is mapped to the Modulation Wheel of the keyboards (MIDI CC 1).
 
