@@ -2,7 +2,7 @@
 
 SamplingProKit is a free and open-source repository with all the tools you need to create a Kontakt and DecentSampler virtual instruments.
 
-This template has RETROSHIMMER (FREE EDITION), an instrument I've created sampling a preset from a Korg microKorg. If you have the samples, you can create [Kontakt](https://www.native-instruments.com/en/products/komplete/samplers/kontakt-7/) and [DecentSampler](https://www.decentsamples.com/product/decent-sampler-plugin/) instruments very quickly, without spending an eternity reading the documentation.
+This template has RETROSHIMMER (FREE EDITION), a synth virtual instrument. If you have the samples, you can create [Kontakt](https://www.native-instruments.com/en/products/komplete/samplers/kontakt-7/) and [DecentSampler](https://www.decentsamples.com/product/decent-sampler-plugin/) instruments very quickly, without spending an eternity reading the documentation.
 
 ### Features:
 

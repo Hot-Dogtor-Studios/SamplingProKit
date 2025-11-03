@@ -13,7 +13,7 @@ Profile: https://www.pianobook.co.uk/profile/hotdogtorstudios
 
 ## Using the instrument
 
-RETROSHIMMER is an instrument I've created sampling a great sounding preset from a Korg microKorg.
+RETROSHIMMER is an synth I've created sampling multiple analog synths.
 This instrument has two groups of samples, one with the dry sound and the other with a Shimmer Reverb effect from a Fractal Audio FM3. 
 The SHIMMER knob is a mix blend between this two groups of samples. This knob is mapped to the Modulation Wheel of the keyboards (MIDI CC 1).
 
